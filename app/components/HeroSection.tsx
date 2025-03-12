@@ -87,7 +87,7 @@ export default function HeroSection() {
               <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-gray-900 leading-tight">
                 Trova il tuo
                 <br />
-                <span className="text-yellow-500">specialista di fiducia</span>
+                <span className="text-yellow-500">dottore di fiducia</span>
               </h1>
               <p className="text-xl text-gray-600 mt-6 max-w-2xl">
                 Prenota visite specialistiche, consulenze e trattamenti nella più grande rete di professionisti in
