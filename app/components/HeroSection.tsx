@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, MapPin, CreditCard } from "lucide-react"
+import { Search, MapPin, CreditCard, Calendar } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -77,7 +77,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative bg-white py-12 lg:py-20 overflow-hidden">
+    <section className="relative bg-yellow-50 py-12 lg:py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto">
           {/* Title and Subtitle with Illustration */}
@@ -90,28 +90,8 @@ export default function HeroSection() {
                 <span className="text-yellow-500">dottore di fiducia</span>
               </h1>
               <p className="text-xl text-gray-600 mt-6 max-w-2xl">
-                Prenota visite specialistiche, consulenze e trattamenti nella più grande rete di professionisti in
-                Italia
+              La piattaforma con recensioni affidabili che ti aiuta a trovare rapidamente il professionista più adatto alle tue esigenze
               </p>
-
-              {/* Direct CTA button */}
-              <div className="mt-8">
-                <Link
-                  href="/doctors"
-                  className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center"
-                >
-                  Trova uno specialista
-                  <svg
-                    className="ml-2 w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </Link>
-              </div>
             </div>
 
             {/* Illustration - positioned to only overlap with title area */}
@@ -165,7 +145,7 @@ export default function HeroSection() {
                   <MapPin className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
                   <input
                     type="text"
-                    placeholder="La tua città"
+                    placeholder="Dove"
                     className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -193,10 +173,10 @@ export default function HeroSection() {
 
                 <div className="flex items-center p-4 relative">
                   <div className="flex-1 flex items-center">
-                    <CreditCard className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
+                    <Calendar className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
                     <input
                       type="text"
-                      placeholder="Assicurazione"
+                      placeholder="Quando"
                       className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
                       value={insurance}
                       onChange={(e) => setInsurance(e.target.value)}
@@ -222,9 +202,10 @@ export default function HeroSection() {
                     )}
                   </div>
                   <button
-                    className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors"
+                    className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors flex items-center"
                     onClick={handleSearch}
                   >
+                    <Search className="h-4 w-4 mr-2" />
                     Cerca
                   </button>
                 </div>
@@ -242,7 +223,7 @@ export default function HeroSection() {
                 <span className="w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900">
                   ✓
                 </span>
-                <span>Recensioni Verificate</span>
+                <span>Recensioni autentiche di clienti reali</span>
               </div>
             </div>
           </div>

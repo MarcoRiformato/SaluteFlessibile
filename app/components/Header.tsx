@@ -30,13 +30,8 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-6">
             <li>
-              <Link href="#" className="text-gray-600 hover:text-yellow-600">
-                Come funziona
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="text-gray-600 hover:text-yellow-600">
-                Per i pazienti
+              <Link href="/doctors" className="text-gray-600 hover:text-yellow-600">
+                Trova specialisti
               </Link>
             </li>
             <li>
@@ -46,7 +41,15 @@ export default function Header() {
             </li>
             <li>
               <Link
-                href="#"
+                href="/registrati"
+                className="border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors"
+              >
+                Registrati
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/accedi"
                 className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-md font-medium transition-colors"
               >
                 Accedi
