@@ -5,12 +5,12 @@ import { Clock, MessageSquare, CheckSquare } from "lucide-react"
 const benefits = [
   {
     title: "Detta le tue condizioni",
-    description: "Scegli il professionista più adatto alle tue esigenze in base a disponibilità, prezzo e recensioni.",
+    description: "Indica le tue disponibilità",
     icon: CheckSquare,
   },
   {
     title: "Opinioni reali senza filtri",
-    description: "Leggi le recensioni verificate di chi ha già provato il servizio.",
+    description: "Utenti veri, che dicono ciò che pensano",
     icon: MessageSquare,
   },
   {

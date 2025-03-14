@@ -77,7 +77,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative bg-yellow-50 py-12 lg:py-20 overflow-hidden">
+    <section className="relative bg-yellow-50 py-12 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto">
           {/* Title and Subtitle with Illustration */}
@@ -90,7 +90,7 @@ export default function HeroSection() {
                 <span className="text-yellow-500">dottore di fiducia</span>
               </h1>
               <p className="text-xl text-gray-600 mt-6 max-w-2xl">
-              La piattaforma con recensioni affidabili che ti aiuta a trovare rapidamente il professionista più adatto alle tue esigenze
+              La piattaforma con recensioni affidabili che trova rapidamente il professionista adatto a <strong>te</strong>
               </p>
             </div>
 
@@ -98,11 +98,10 @@ export default function HeroSection() {
             <div className="absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10">
               <div className="relative w-full h-full">
                 <img
-                  src="https://picsum.photos/800/600"
+                  src="/dottori-escono-telefono.webp"
                   alt="Medical illustration"
-                  className="w-full h-full object-cover opacity-90"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
               </div>
             </div>
           </div>

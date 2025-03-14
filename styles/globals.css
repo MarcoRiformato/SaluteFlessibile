@@ -2,8 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sharp Sans Font */
+@font-face {
+  font-family: 'Sharp Sans';
+  src: url('/fonts/sharp-sans/SharpSans-Regular.woff2') format('woff2'),
+       url('/fonts/sharp-sans/SharpSans-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sharp Sans';
+  src: url('/fonts/sharp-sans/SharpSans-Medium.woff2') format('woff2'),
+       url('/fonts/sharp-sans/SharpSans-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sharp Sans';
+  src: url('/fonts/sharp-sans/SharpSans-Bold.woff2') format('woff2'),
+       url('/fonts/sharp-sans/SharpSans-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Sharp Sans', Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {

@@ -58,7 +58,7 @@ export default function JoinUs() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-b from-yellow-200 to-yellow-400 rounded-2xl blur-3xl opacity-20"></div>
               <Image
-                src="/placeholder.svg?height=400&width=400&text=Doctor+using+FlexiCare"
+                src="/dottori-bici.webp"
                 alt="Dottore che usa FlexiCare"
                 width={400}
                 height={400}

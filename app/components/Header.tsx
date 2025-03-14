@@ -17,15 +17,15 @@ export default function Header() {
   return (
     <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-yellow-100">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center space-x-2">
-          <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OcAYcgbVTCxUO9SDuapT1Q5N2QEY7n.png"
-            alt="FlexiCare Logo"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <span className="text-2xl font-bold text-gray-900">FlexiCare</span>
+        <Link href="/" className="flex items-center">
+          <div className="w-[140px] h-[50px] overflow-hidden relative rounded-md">
+            <Image
+              src="/flexicare-svg.svg"
+              alt="FlexiCare Logo"
+              fill
+              className="object-cover object-center"
+            />
+          </div>
         </Link>
         <nav>
           <ul className="flex space-x-6">

@@ -98,11 +98,6 @@ export default function SpecialistTabs() {
               />
               <span className="font-semibold text-center">{specialist.name}</span>
               <p className="text-xs mt-1 opacity-80">{specialist.description}</p>
-              {index < specialists.length - 1 && (
-                <div className="hidden md:block absolute right-[-2rem] top-[50%] text-yellow-500 text-4xl transform -translate-y-1/2">
-                  →
-                </div>
-              )}
             </button>
           ))}
         </div>
