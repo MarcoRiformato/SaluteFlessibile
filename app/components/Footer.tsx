@@ -105,13 +105,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-500">&copy; 2025 FlexiCare. Tutti i diritti riservati.</p>
             <div className="flex gap-6">
-              <Link href="#" className="text-gray-500 hover:text-yellow-400 transition-colors">
+              <Link href="https://www.iubenda.com/privacy-policy/70509524" className="text-gray-500 hover:text-yellow-400 transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="#" className="text-gray-500 hover:text-yellow-400 transition-colors">
-                Termini di Servizio
-              </Link>
-              <Link href="#" className="text-gray-500 hover:text-yellow-400 transition-colors">
+              <Link href="https://www.iubenda.com/privacy-policy/70509524/cookie-policy" className="text-gray-500 hover:text-yellow-400 transition-colors">
                 Cookie Policy
               </Link>
             </div>
