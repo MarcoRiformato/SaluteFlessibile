@@ -12,12 +12,12 @@ interface AppointmentFormProps {
     name: string
     specialty: string
   }
-  appointmentDate: Date
-  appointmentTime: string
+  date: Date
+  time: string
   onBack: () => void
 }
 
-export default function AppointmentForm({ doctor, appointmentDate, appointmentTime, onBack }: AppointmentFormProps) {
+export default function AppointmentForm({ doctor, date, time, onBack }: AppointmentFormProps) {
   const router = useRouter()
   const [formData, setFormData] = useState({
     firstName: "",
@@ -85,20 +85,27 @@ export default function AppointmentForm({ doctor, appointmentDate, appointmentTi
         // Redirect to success page with appointment details
         router.push(
           `/booking-success?doctor=${encodeURIComponent(doctor.name)}&date=${encodeURIComponent(
-            appointmentDate.toLocaleDateString("it-IT"),
-          )}&time=${encodeURIComponent(appointmentTime)}`,
+            formatDate(date)
+          )}&time=${encodeURIComponent(time)}`,
         )
       }, 1500)
     }
   }
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("it-IT", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
+    if (!date) return '';
+    
+    try {
+      return date.toLocaleDateString("it-IT", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return '';
+    }
   }
 
   return (
@@ -114,10 +121,10 @@ export default function AppointmentForm({ doctor, appointmentDate, appointmentTi
           <span className="font-medium">Specialista:</span> {doctor.name} ({doctor.specialty})
         </p>
         <p>
-          <span className="font-medium">Data:</span> {formatDate(appointmentDate)}
+          <span className="font-medium">Data:</span> {formatDate(date)}
         </p>
         <p>
-          <span className="font-medium">Ora:</span> {appointmentTime}
+          <span className="font-medium">Ora:</span> {time}
         </p>
       </div>
 

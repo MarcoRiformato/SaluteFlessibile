@@ -101,58 +101,53 @@ export default function DoctorPreviewModal({ doctor, onClose }: DoctorPreviewMod
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white z-10 p-4 border-b flex justify-between items-center">
-          <h2 className="text-xl font-bold">{doctor.name}</h2>
+        <div className="sticky top-0 bg-white z-10 p-3 sm:p-4 border-b flex justify-between items-center">
+          <h2 className="text-lg sm:text-xl font-bold">{doctor.name}</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Close modal"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-3 sm:p-6">
           {!showForm ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
               {/* Doctor info */}
               <div>
-                <div className="flex items-start gap-4 mb-6">
+                <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <Image
                     src={doctor.image || "/placeholder.svg"}
                     alt={doctor.name}
-                    width={100}
-                    height={100}
-                    className="rounded-full"
+                    width={80}
+                    height={80}
+                    className="rounded-full w-16 h-16 sm:w-20 sm:h-20"
                   />
                   <div>
-                    <h3 className="font-semibold text-lg">{doctor.specialty}</h3>
+                    <h3 className="font-semibold text-base sm:text-lg">{doctor.specialty}</h3>
                     <div className="flex items-center gap-1 mt-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-medium">{doctor.rating}</span>
-                      <span className="text-gray-500 text-sm">({doctor.reviews} recensioni)</span>
+                      <span className="font-medium text-sm sm:text-base">{doctor.rating}</span>
+                      <span className="text-gray-500 text-xs sm:text-sm">({doctor.reviews} recensioni)</span>
                     </div>
-                    <div className="flex items-center gap-1 mt-2 text-gray-600">
+                    <div className="flex items-center gap-1 text-sm text-gray-600 mt-1">
                       <MapPin className="h-4 w-4 text-gray-400" />
-                      {doctor.location} ({doctor.distance})
+                      {doctor.location}
                     </div>
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <h4 className="font-semibold mb-2">Informazioni</h4>
-                  <p className="text-gray-600">{doctor.about}</p>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="font-semibold mb-2">Specializzazioni</h4>
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Specializzazioni</h4>
                   <div className="flex flex-wrap gap-2">
                     {doctor.specializations.map((spec) => (
                       <span
                         key={spec}
-                        className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded"
+                        className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs sm:text-sm"
                       >
                         {spec}
                       </span>
@@ -160,98 +155,105 @@ export default function DoctorPreviewModal({ doctor, onClose }: DoctorPreviewMod
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <h4 className="font-semibold mb-2">Lingue parlate</h4>
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Lingue parlate</h4>
                   <div className="flex flex-wrap gap-2">
                     {doctor.languages.map((lang) => (
-                      <span key={lang} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">
+                      <span key={lang} className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs sm:text-sm">
                         {lang}
                       </span>
                     ))}
                   </div>
                 </div>
 
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Formazione</h4>
+                  <p className="text-gray-700 text-sm sm:text-base">{doctor.education}</p>
+                </div>
+
                 <div>
-                  <h4 className="font-semibold mb-2">Formazione</h4>
-                  <p className="text-gray-600">{doctor.education}</p>
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base">Chi sono</h4>
+                  <p className="text-gray-700 text-sm sm:text-base">{doctor.about}</p>
                 </div>
               </div>
 
-              {/* Calendar view */}
-              <div>
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-semibold flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-yellow-500" />
-                      Seleziona una data
-                    </h4>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setCurrentWeek(Math.max(0, currentWeek - 1))}
-                        disabled={currentWeek === 0}
-                        className="p-1 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                        aria-label="Previous week"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => setCurrentWeek(Math.min(1, currentWeek + 1))}
-                        disabled={currentWeek === 1}
-                        className="p-1 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                        aria-label="Next week"
-                      >
-                        <ChevronRight className="h-5 w-5" />
-                      </button>
-                    </div>
+              {/* Booking section */}
+              <div className="bg-gray-50 p-3 sm:p-6 rounded-lg">
+                <h3 className="font-semibold mb-3 sm:mb-4 text-base sm:text-lg">Seleziona data e ora</h3>
+
+                {/* Date selection */}
+                <div className="mb-4 sm:mb-6">
+                  <div className="flex justify-between items-center mb-2 sm:mb-3">
+                    <button
+                      onClick={() => setCurrentWeek(Math.max(0, currentWeek - 1))}
+                      disabled={currentWeek === 0}
+                      className={`p-1 rounded ${
+                        currentWeek === 0 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                    </button>
+                    <span className="text-sm sm:text-base font-medium">
+                      {displayDates.length > 0
+                        ? `${displayDates[0].toLocaleDateString("it-IT", {
+                            month: "short",
+                            day: "numeric",
+                          })} - ${displayDates[displayDates.length - 1].toLocaleDateString("it-IT", {
+                            month: "short",
+                            day: "numeric",
+                          })}`
+                        : ""}
+                    </span>
+                    <button
+                      onClick={() => setCurrentWeek(currentWeek + 1)}
+                      disabled={(currentWeek + 1) * 7 >= availableDates.length}
+                      className={`p-1 rounded ${
+                        (currentWeek + 1) * 7 >= availableDates.length
+                          ? "text-gray-300 cursor-not-allowed"
+                          : "text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                    </button>
                   </div>
 
-                  <div className="grid grid-cols-7 gap-2 mb-6">
+                  <div className="grid grid-cols-3 sm:grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
                     {displayDates.map((date) => (
                       <button
                         key={date.toISOString()}
                         onClick={() => handleDateSelect(date)}
-                        className={`p-2 rounded-lg text-center transition-colors ${
-                          selectedDate.toDateString() === date.toDateString()
-                            ? "bg-yellow-400 text-gray-900"
-                            : "hover:bg-yellow-100"
-                        } ${isToday(date) ? "border-2 border-yellow-500" : ""}`}
+                        className={`py-1 sm:py-2 px-1 sm:px-3 rounded-md text-center text-xs sm:text-sm transition-colors ${
+                          date.toDateString() === selectedDate.toDateString()
+                            ? "bg-yellow-400 text-gray-900 font-medium"
+                            : "bg-white border hover:bg-gray-50"
+                        }`}
                       >
-                        <div className="text-xs font-medium">
-                          {date.toLocaleDateString("it-IT", { weekday: "short" })}
+                        <div className="font-medium">{date.toLocaleDateString("it-IT", { weekday: "short" })}</div>
+                        <div className="mt-1">
+                          {isToday(date) ? "Oggi" : date.toLocaleDateString("it-IT", { day: "numeric" })}
                         </div>
-                        <div className="font-bold">{date.getDate()}</div>
-                        <div className="text-xs">{date.toLocaleDateString("it-IT", { month: "short" })}</div>
                       </button>
                     ))}
                   </div>
                 </div>
 
+                {/* Time selection */}
                 <div>
-                  <h4 className="font-semibold flex items-center gap-2 mb-4">
-                    <Clock className="h-5 w-5 text-yellow-500" />
-                    Orari disponibili per {formatDate(selectedDate)}
-                  </h4>
-
-                  <div className="grid grid-cols-3 gap-2">
-                    {availableTimeSlots.length > 0 ? (
-                      availableTimeSlots.map((time) => (
-                        <button
-                          key={time}
-                          onClick={() => handleTimeSelect(time)}
-                          className={`p-2 border rounded-lg text-center transition-colors ${
-                            selectedTime === time
-                              ? "bg-yellow-400 border-yellow-500 text-gray-900"
-                              : "hover:bg-yellow-100"
-                          }`}
-                        >
-                          {time}
-                        </button>
-                      ))
-                    ) : (
-                      <p className="col-span-3 text-center text-gray-500 py-4">
-                        Nessun orario disponibile per questa data
-                      </p>
-                    )}
+                  <h4 className="font-medium mb-2 text-sm sm:text-base">Orari disponibili</h4>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
+                    {availableTimeSlots.map((time) => (
+                      <button
+                        key={time}
+                        onClick={() => handleTimeSelect(time)}
+                        className={`py-1 sm:py-2 px-2 rounded-md text-center text-xs sm:text-sm transition-colors ${
+                          selectedTime === time
+                            ? "bg-yellow-400 text-gray-900 font-medium"
+                            : "bg-white border hover:bg-gray-50"
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -259,8 +261,8 @@ export default function DoctorPreviewModal({ doctor, onClose }: DoctorPreviewMod
           ) : (
             <AppointmentForm
               doctor={doctor}
-              appointmentDate={selectedDate}
-              appointmentTime={selectedTime || ""}
+              date={selectedDate}
+              time={selectedTime || ""}
               onBack={() => setShowForm(false)}
             />
           )}

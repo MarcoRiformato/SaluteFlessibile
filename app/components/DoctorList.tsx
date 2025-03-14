@@ -19,7 +19,7 @@ const doctors = [
     location: "Milano, Centro",
     distance: "1.2 km",
     available: "Oggi",
-    image: "/placeholder.svg?height=80&width=80&text=MB",
+    image: "https://picsum.photos/seed/doctor1/200",
     specializations: ["Medicina generale", "Geriatria"],
     languages: ["Italiano", "Inglese"],
     education: "Università degli Studi di Milano",
@@ -35,7 +35,7 @@ const doctors = [
     location: "Milano, Navigli",
     distance: "2.5 km",
     available: "Domani",
-    image: "/placeholder.svg?height=80&width=80&text=GR",
+    image: "https://picsum.photos/seed/doctor2/200",
     specializations: ["Cardiologia", "Medicina interna"],
     languages: ["Italiano", "Francese"],
     education: "Università di Bologna",
@@ -51,7 +51,7 @@ const doctors = [
     location: "Milano, Isola",
     distance: "3.1 km",
     available: "Oggi",
-    image: "/placeholder.svg?height=80&width=80&text=AV",
+    image: "https://picsum.photos/seed/doctor3/200",
     specializations: ["Dermatologia", "Allergologia"],
     languages: ["Italiano", "Inglese", "Spagnolo"],
     education: "Università La Sapienza di Roma",
@@ -67,7 +67,7 @@ const doctors = [
     location: "Milano, Porta Romana",
     distance: "1.8 km",
     available: "Giovedì",
-    image: "/placeholder.svg?height=80&width=80&text=LN",
+    image: "https://picsum.photos/seed/doctor4/200",
     specializations: ["Psicologia clinica", "Terapia cognitivo-comportamentale"],
     languages: ["Italiano", "Inglese"],
     education: "Università degli Studi di Padova",
@@ -83,7 +83,7 @@ const doctors = [
     location: "Milano, Città Studi",
     distance: "2.2 km",
     available: "Venerdì",
-    image: "/placeholder.svg?height=80&width=80&text=RM",
+    image: "https://picsum.photos/seed/doctor5/200",
     specializations: ["Fisioterapia ortopedica", "Riabilitazione sportiva"],
     languages: ["Italiano"],
     education: "Università degli Studi di Verona",
@@ -159,28 +159,28 @@ export default function DoctorList() {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Trova il tuo specialista</h1>
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Trova il tuo specialista</h1>
 
         {/* Search and filter bar */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-8">
-          <div className="flex flex-col md:flex-row gap-4">
+        <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-6 sm:mb-8">
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Cerca per nome o specialità"
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex-1 flex gap-4">
+            <div className="flex flex-1 gap-2 sm:gap-4">
               <div className="flex-1">
                 <select
                   value={selectedSpecialty}
                   onChange={(e) => setSelectedSpecialty(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
                 >
                   {specialties.map((specialty) => (
                     <option key={specialty} value={specialty}>
@@ -193,7 +193,7 @@ export default function DoctorList() {
                 <select
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
                 >
                   {locations.map((location) => (
                     <option key={location} value={location}>
@@ -203,51 +203,104 @@ export default function DoctorList() {
                 </select>
               </div>
             </div>
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              Altri filtri
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 sm:px-6 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap text-sm sm:text-base">
+              <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span>Altri filtri</span>
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
           {/* Doctor list */}
-          <div className="lg:w-1/2">
-            <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-              <h2 className="text-xl font-semibold mb-4">{filteredDoctors.length} specialisti trovati</h2>
-              <div className="space-y-4">
+          <div className="w-full lg:w-1/2">
+            <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">{filteredDoctors.length} specialisti trovati</h2>
+              <div className="space-y-3 sm:space-y-4">
                 {filteredDoctors.map((doctor) => (
                   <div
                     key={doctor.id}
-                    className="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                    className="border border-gray-100 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow cursor-pointer"
                     onClick={() => openModal(doctor)}
                   >
-                    <div className="flex items-start gap-4">
-                      <Image
-                        src={doctor.image || "/placeholder.svg"}
-                        alt={doctor.name}
-                        width={80}
-                        height={80}
-                        className="rounded-full"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{doctor.name}</h3>
-                        <p className="text-gray-600">{doctor.specialty}</p>
-                        <div className="flex items-center gap-1 mt-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{doctor.rating}</span>
+                    {/* Better layout for mobile */}
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      {/* Top row for mobile: Image, name, and badge */}
+                      <div className="w-full flex items-center gap-3 mb-1 sm:mb-0 sm:hidden">
+                        <div className="flex-shrink-0">
+                          <Image
+                            src={doctor.image}
+                            alt={doctor.name}
+                            width={48}
+                            height={48}
+                            className="rounded-full w-12 h-12 object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-base leading-tight">{doctor.name}</h3>
+                          <p className="text-gray-600 text-sm">{doctor.specialty}</p>
+                        </div>
+                        <div className="flex-shrink-0 ml-1">
+                          <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded whitespace-nowrap">
+                            {doctor.available}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Desktop layout */}
+                      <div className="hidden sm:block flex-shrink-0">
+                        <Image
+                          src={doctor.image}
+                          alt={doctor.name}
+                          width={60}
+                          height={60}
+                          className="rounded-full w-16 h-16 object-cover"
+                        />
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        {/* Desktop: Name and specialty */}
+                        <div className="hidden sm:block">
+                          <h3 className="font-semibold text-lg line-clamp-1">{doctor.name}</h3>
+                          <p className="text-gray-600 text-base">{doctor.specialty}</p>
+                        </div>
+                        
+                        {/* Mobile: Just specialty hidden since we moved it up */}
+                        <div className="sm:hidden">
+                          {/* Location and rating row combined */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3 text-gray-400 flex-shrink-0" />
+                              <span className="text-xs">{doctor.location}</span>
+                              <span className="text-xs text-gray-500 ml-1">{doctor.distance}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                              <span className="font-medium text-xs">{doctor.rating}</span>
+                              <span className="text-gray-500 text-xs">({doctor.reviews} rec.)</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Desktop rating */}
+                        <div className="hidden sm:flex items-center gap-1 mt-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                          <span className="font-medium text-base">{doctor.rating}</span>
                           <span className="text-gray-500 text-sm">({doctor.reviews} recensioni)</span>
                         </div>
-                        <div className="flex items-center gap-4 mt-2">
+                        
+                        {/* Desktop location section */}
+                        <div className="hidden sm:flex flex-wrap items-center gap-2 sm:gap-4 mt-1 sm:mt-2">
                           <div className="flex items-center gap-1 text-sm text-gray-600">
-                            <MapPin className="h-4 w-4 text-gray-400" />
-                            {doctor.location}
+                            <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                            <span>{doctor.location}</span>
                           </div>
                           <div className="text-sm text-gray-600">{doctor.distance}</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+                      
+                      {/* Desktop: Availability badge */}
+                      <div className="hidden sm:flex flex-shrink-0 self-start">
+                        <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded whitespace-nowrap">
                           Disponibile {doctor.available}
                         </span>
                       </div>
@@ -259,11 +312,11 @@ export default function DoctorList() {
           </div>
 
           {/* Map view */}
-          <div className="lg:w-1/2">
+          <div className="w-full lg:w-1/2 hidden lg:block">
             <div className="bg-white rounded-xl shadow-md p-4 h-[600px] sticky top-4">
               <div className="relative h-full w-full rounded-lg overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=600&width=600&text=Map+View"
+                  src="https://picsum.photos/seed/map/600/600"
                   alt="Map"
                   fill
                   className="object-cover"

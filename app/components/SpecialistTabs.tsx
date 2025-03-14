@@ -73,20 +73,20 @@ export default function SpecialistTabs() {
   }, [buttonRef])
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-8 sm:py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Scegli tra i migliori specialisti</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Scegli tra i migliori specialisti</h2>
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             Accedi a una rete di professionisti verificati e prenota la tua visita in tutta sicurezza
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
           {specialists.map((specialist, index) => (
             <button
               key={specialist.name}
-              className={`flex flex-col items-center p-6 rounded-xl transition-all duration-300 ${
+              className={`flex flex-col items-center p-3 sm:p-4 md:p-6 rounded-xl transition-all duration-300 ${
                 activeTab === index
                   ? "bg-yellow-400 text-gray-900 shadow-lg transform scale-105"
                   : "bg-white text-gray-600 hover:bg-yellow-50 border border-gray-100"
@@ -94,10 +94,10 @@ export default function SpecialistTabs() {
               onClick={() => handleSpecialistClick(specialist, index)}
             >
               <specialist.icon
-                className={`h-8 w-8 mb-3 ${activeTab === index ? "text-gray-900" : "text-yellow-500"}`}
+                className={`h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-3 ${activeTab === index ? "text-gray-900" : "text-yellow-500"}`}
               />
-              <span className="font-semibold text-center">{specialist.name}</span>
-              <p className="text-xs mt-1 opacity-80">{specialist.description}</p>
+              <span className="font-semibold text-center text-xs sm:text-sm md:text-base">{specialist.name}</span>
+              <p className="text-[10px] sm:text-xs mt-1 opacity-80 hidden sm:block">{specialist.description}</p>
             </button>
           ))}
         </div>
@@ -114,19 +114,19 @@ export default function SpecialistTabs() {
         {selectedSpecialist && (
           <div 
             ref={buttonRef}
-            className={`fixed bottom-8 left-0 right-0 flex justify-center z-40 transition-all duration-500 ease-in-out ${
+            className={`fixed bottom-4 sm:bottom-8 left-0 right-0 flex justify-center z-40 transition-all duration-500 ease-in-out ${
               isButtonVisible 
                 ? "opacity-100 transform translate-y-0" 
                 : "opacity-0 transform translate-y-20 pointer-events-none"
             }`}
           >
-            <div className="relative">
+            <div className="relative px-4 sm:px-0">
               <button
                 onClick={handleViewSpecialists}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full shadow-xl border-2 border-blue-400 transition-all transform hover:scale-105 duration-300 flex items-center space-x-2"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl border-2 border-blue-400 transition-all transform hover:scale-105 duration-300 flex items-center space-x-2 text-sm sm:text-base"
               >
                 <span className="underline">Clicca per vedere i nostri {selectedSpecialist.name}</span>
-                <ExternalLink className="h-5 w-5 ml-2" />
+                <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
               </button>
               <button 
                 onClick={closeButton}
@@ -139,9 +139,9 @@ export default function SpecialistTabs() {
           </div>
         )}
 
-        <div className="mt-12 text-center">
+        <div className="mt-8 sm:mt-12 text-center">
           <Button
-            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-8 py-3 rounded-xl"
+            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-xl text-sm sm:text-base"
             onClick={() => router.push("/doctors")}
           >
             Mostra tutti gli specialisti

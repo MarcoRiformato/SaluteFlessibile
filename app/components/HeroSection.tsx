@@ -77,25 +77,25 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative bg-yellow-50 py-12 overflow-hidden">
+    <section className="relative bg-yellow-50 py-8 md:py-12 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto">
           {/* Title and Subtitle with Illustration */}
-          <div className="relative mb-12">
+          <div className="relative mb-8 md:mb-12">
             {/* Title and Subtitle */}
             <div className="relative z-20">
-              <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-gray-900 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-gray-900 leading-tight">
                 Trova il tuo
                 <br />
                 <span className="text-yellow-500">dottore di fiducia</span>
               </h1>
-              <p className="text-xl text-gray-600 mt-6 max-w-2xl">
-              La piattaforma con recensioni affidabili che trova rapidamente il professionista adatto a <strong>te</strong>
+              <p className="text-lg sm:text-xl text-gray-600 mt-4 md:mt-6 max-w-2xl">
+                La piattaforma con recensioni affidabili che trova rapidamente il professionista adatto a <strong>te</strong>
               </p>
             </div>
 
-            {/* Illustration - positioned to only overlap with title area */}
-            <div className="absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10">
+            {/* Illustration - hidden on mobile, visible on larger screens */}
+            <div className="hidden md:block absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10">
               <div className="relative w-full h-full">
                 <img
                   src="/dottori-escono-telefono.webp"
@@ -103,6 +103,15 @@ export default function HeroSection() {
                   className="w-full h-full object-cover"
                 />
               </div>
+            </div>
+            
+            {/* Mobile illustration - centered below title */}
+            <div className="md:hidden w-full mt-6 mb-8">
+              <img
+                src="/dottori-escono-telefono.webp"
+                alt="Medical illustration"
+                className="w-full max-w-[300px] mx-auto object-cover rounded-lg"
+              />
             </div>
           </div>
 
@@ -201,7 +210,7 @@ export default function HeroSection() {
                     )}
                   </div>
                   <button
-                    className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors flex items-center"
+                    className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 sm:px-6 py-2 rounded-lg transition-colors flex items-center whitespace-nowrap"
                     onClick={handleSearch}
                   >
                     <Search className="h-4 w-4 mr-2" />
@@ -211,7 +220,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-8 mt-4 text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-4 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <span className="w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900">
                   ✓
