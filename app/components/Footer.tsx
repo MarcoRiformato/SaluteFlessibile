@@ -3,21 +3,19 @@ import Image from "next/image"
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 py-10 md:py-16">
+    <footer className="bg-gray-900 py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
           <div>
-            <div className="flex items-center gap-2 mb-4 md:mb-6">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OcAYcgbVTCxUO9SDuapT1Q5N2QEY7n.png"
-                alt="FlexiCare Logo"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <span className="text-xl md:text-2xl font-bold text-white">FlexiCare</span>
-            </div>
-            <p className="text-gray-400 text-sm md:text-base">
+          <div className="w-[140px] h-[50px] overflow-hidden relative rounded-md ">
+            <Image
+              src="/flexicare-svg.svg"
+              alt="FlexiCare Logo"
+              fill
+              className="object-cover object-center"
+            />
+          </div>
+            <p className="text-gray-400 text-sm md:text-base mt-2">
               La piattaforma che connette pazienti e professionisti della salute in modo semplice e sicuro.
             </p>
           </div>

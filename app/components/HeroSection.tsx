@@ -1,13 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import { Search, MapPin, CreditCard, Calendar } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { Search, MapPin, Calendar } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
+import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from "date-fns"
+import { it } from "date-fns/locale"
 
 // Example suggestion data
 const specialtySuggestions = [
-  "Medico di base",
   "Cardiologo",
   "Dermatologo",
   "Psicologo",
@@ -20,16 +24,24 @@ const specialtySuggestions = [
 ]
 
 const locationSuggestions = [
-  "Milano Centro",
-  "Milano Navigli",
-  "Milano Isola",
-  "Milano Porta Romana",
-  "Milano Città Studi",
+  "Milano",
   "Roma",
   "Torino",
   "Firenze",
   "Bologna",
   "Napoli",
+  "Palermo",
+  "Genova",
+  "Bari",
+  "Catania",
+  "Venezia",
+  "Verona",
+  "Padova",
+  "Parma",
+  "Brescia",
+  "Modena",
+  "Pisa",
+  "Cagliari",
 ]
 
 const insuranceSuggestions = [
@@ -41,22 +53,59 @@ const insuranceSuggestions = [
   "Assicurazione E",
 ]
 
+// Professions for the animation
+const professions = ["Medico", "Infermiere", "Fisioterapista", "Psicologo", "Nutrizionista", "Osteopata", "Farmacista", "Dentista", "Veterinario"]
+
 export default function HeroSection() {
   const router = useRouter()
   const [specialty, setSpecialty] = useState("")
   const [location, setLocation] = useState("")
-  const [insurance, setInsurance] = useState("")
+  const [date, setDate] = useState<Date | undefined>(undefined)
 
   const [showSpecialtySuggestions, setShowSpecialtySuggestions] = useState(false)
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
-  const [showInsuranceSuggestions, setShowInsuranceSuggestions] = useState(false)
+
+  // References to the input elements for positioning the dropdowns
+  const specialtyInputRef = useRef<HTMLDivElement>(null)
+  const locationInputRef = useRef<HTMLDivElement>(null)
+
+  // Animation state
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Find the longest profession to set minimum width
+  const longestProfession = professions.reduce(
+    (longest, current) => (current.length > longest.length ? current : longest),
+    "",
+  )
+
+  // Animation interval effect with more precise control
+  useEffect(() => {
+    // Clear any existing interval when the component mounts or re-renders
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    
+    // Set up a new interval
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % professions.length)
+    }, 5000)
+    
+    // Clean up on unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+  }, [])
 
   const handleSearch = () => {
     // Navigate to doctors page with search params
     const params = new URLSearchParams()
     if (specialty) params.append("specialty", specialty)
     if (location) params.append("location", location)
-    if (insurance) params.append("insurance", insurance)
+    if (date) params.append("date", date.toISOString())
 
     router.push(`/doctors?${params.toString()}`)
   }
@@ -71,164 +120,207 @@ export default function HeroSection() {
     setShowLocationSuggestions(false)
   }
 
-  const handleInsuranceSelect = (value: string) => {
-    setInsurance(value)
-    setShowInsuranceSuggestions(false)
+  const formatSelectedDate = (date: Date | undefined) => {
+    if (!date) return ""
+    return format(date, "d MMMM yyyy", { locale: it })
   }
 
   return (
-    <section className="relative bg-yellow-50 py-8 md:py-12 overflow-hidden">
+    <section className="relative bg-yellow-50 py-6 md:py-12 overflow-visible">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto">
           {/* Title and Subtitle with Illustration */}
-          <div className="relative mb-8 md:mb-12">
+          <div className="relative mb-6 md:mb-12">
             {/* Title and Subtitle */}
             <div className="relative z-20">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-gray-900 leading-tight">
-                Trova il tuo
-                <br />
-                <span className="text-yellow-500">dottore di fiducia</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-gray-900 leading-tight text-center sm:text-left">
+                <div className="flex flex-wrap sm:flex-nowrap items-baseline whitespace-normal sm:whitespace-nowrap justify-center sm:justify-start">
+                  <span>Trova il tuo</span>
+                  <div 
+                    className="relative text-yellow-500 ml-2 sm:ml-3 mr-0"
+                    style={{
+                      minWidth: `${longestProfession.length * 0.55}em`,
+                      textAlign: "center"
+                    }}
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={currentIndex}
+                        className="absolute left-0 right-0 mx-auto sm:mx-0 sm:left-0 sm:right-auto font-bold"
+                        style={{
+                          top: "0",
+                          transformOrigin: "center",
+                        }}
+                        initial={{ rotateX: -90, opacity: 0 }}
+                        animate={{ rotateX: 0, opacity: 1 }}
+                        exit={{ rotateX: 90, opacity: 0 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 25,
+                          opacity: { duration: 0.3 },
+                        }}
+                      >
+                        {professions[currentIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                    {/* Invisible text to maintain space */}
+                    <span className="invisible">{longestProfession}</span>
+                  </div>
+                </div>
+                <div className="mt-0 sm:mt-1">di fiducia</div>
               </h1>
-              <p className="text-lg sm:text-xl text-gray-600 mt-4 md:mt-6 max-w-2xl">
+              <p className="text-lg sm:text-xl text-gray-600 mt-3 md:mt-6 max-w-2xl mx-auto sm:mx-0 text-center sm:text-left">
                 La piattaforma con recensioni affidabili che trova rapidamente il professionista adatto a <strong>te</strong>
               </p>
             </div>
 
             {/* Illustration - hidden on mobile, visible on larger screens */}
-            <div className="hidden md:block absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10">
-              <div className="relative w-full h-full">
+            <div className="hidden md:block absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10 flex items-center justify-center">
+              <div className="relative w-full h-full flex items-center justify-center">
                 <img
-                  src="/dottori-escono-telefono.webp"
+                  src="/dottore-abbraccia.png"
                   alt="Medical illustration"
-                  className="w-full h-full object-cover"
+                  className="w-auto h-auto max-h-[175%] max-w-[150%] object-contain absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 />
               </div>
-            </div>
-            
-            {/* Mobile illustration - centered below title */}
-            <div className="md:hidden w-full mt-6 mb-8">
-              <img
-                src="/dottori-escono-telefono.webp"
-                alt="Medical illustration"
-                className="w-full max-w-[300px] mx-auto object-cover rounded-lg"
-              />
             </div>
           </div>
 
           {/* Search Bar - separate from illustration */}
-          <div className="relative">
+          <div className="relative" style={{ zIndex: 99999 }}>
             <div className="bg-white rounded-xl shadow-lg border border-gray-200">
               <div className="flex flex-col md:flex-row">
-                <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-4 relative">
-                  <Search className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
+                {/* Specialty search field */}
+                <div 
+                  ref={specialtyInputRef}
+                  className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative"
+                  style={{ minWidth: 0 }}
+                >
+                  <Search className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
                   <input
                     type="text"
                     placeholder="Prestazione o specialista"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
+                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base"
                     value={specialty}
                     onChange={(e) => setSpecialty(e.target.value)}
                     onFocus={() => setShowSpecialtySuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSpecialtySuggestions(false), 200)}
                   />
-
-                  {/* Specialty suggestions dropdown */}
-                  {showSpecialtySuggestions && (
-                    <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-b-lg z-50 mt-1 max-h-60 overflow-y-auto">
-                      {specialtySuggestions
-                        .filter((item) => item.toLowerCase().includes(specialty.toLowerCase()) || specialty === "")
-                        .map((suggestion, index) => (
-                          <div
-                            key={index}
-                            className="px-4 py-2 hover:bg-yellow-50 cursor-pointer"
-                            onMouseDown={() => handleSpecialtySelect(suggestion)}
-                          >
-                            {suggestion}
-                          </div>
-                        ))}
-                    </div>
-                  )}
                 </div>
 
-                <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-4 relative">
-                  <MapPin className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
+                {/* Location search field */}
+                <div 
+                  ref={locationInputRef}
+                  className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative"
+                  style={{ minWidth: 0 }}
+                >
+                  <MapPin className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
                   <input
                     type="text"
                     placeholder="Dove"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
+                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     onFocus={() => setShowLocationSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowLocationSuggestions(false), 200)}
                   />
-
-                  {/* Location suggestions dropdown */}
-                  {showLocationSuggestions && (
-                    <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-b-lg z-50 mt-1 max-h-60 overflow-y-auto">
-                      {locationSuggestions
-                        .filter((item) => item.toLowerCase().includes(location.toLowerCase()) || location === "")
-                        .map((suggestion, index) => (
-                          <div
-                            key={index}
-                            className="px-4 py-2 hover:bg-yellow-50 cursor-pointer"
-                            onMouseDown={() => handleLocationSelect(suggestion)}
-                          >
-                            {suggestion}
-                          </div>
-                        ))}
-                    </div>
-                  )}
                 </div>
 
-                <div className="flex items-center p-4 relative">
-                  <div className="flex-1 flex items-center">
-                    <Calendar className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
-                    <input
-                      type="text"
-                      placeholder="Quando"
-                      className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none"
-                      value={insurance}
-                      onChange={(e) => setInsurance(e.target.value)}
-                      onFocus={() => setShowInsuranceSuggestions(true)}
-                      onBlur={() => setTimeout(() => setShowInsuranceSuggestions(false), 200)}
-                    />
-
-                    {/* Insurance suggestions dropdown */}
-                    {showInsuranceSuggestions && (
-                      <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-b-lg z-50 mt-1 max-h-60 overflow-y-auto">
-                        {insuranceSuggestions
-                          .filter((item) => item.toLowerCase().includes(insurance.toLowerCase()) || insurance === "")
-                          .map((suggestion, index) => (
-                            <div
-                              key={index}
-                              className="px-4 py-2 hover:bg-yellow-50 cursor-pointer"
-                              onMouseDown={() => handleInsuranceSelect(suggestion)}
-                            >
-                              {suggestion}
-                            </div>
-                          ))}
-                      </div>
-                    )}
+                {/* Date selection */}
+                <div className="flex items-center p-3 md:p-4 relative" style={{ flex: "1 1 0%", minWidth: 0 }}>
+                  <div className="w-full flex items-center">
+                    <Calendar className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button className="w-full flex items-center justify-between text-left bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base">
+                          <span className={date ? "" : "text-gray-500"}>
+                            {date ? formatSelectedDate(date) : "Quando"}
+                          </span>
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-white" style={{ zIndex: 999999 }} align="start">
+                        <CalendarComponent
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                          fromDate={new Date()}
+                          className="bg-white"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                   <button
-                    className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 sm:px-6 py-2 rounded-lg transition-colors flex items-center whitespace-nowrap"
+                    className="ml-2 md:ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-3 sm:px-6 py-2 rounded-lg transition-colors flex items-center whitespace-nowrap text-sm md:text-base flex-shrink-0"
                     onClick={handleSearch}
                   >
-                    <Search className="h-4 w-4 mr-2" />
+                    <Search className="h-4 w-4 mr-1 md:mr-2" />
                     Cerca
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-4 text-sm text-gray-500">
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900">
+            {/* Specialty suggestions dropdown - positioned absolutely */}
+            {showSpecialtySuggestions && specialtyInputRef.current && (
+              <div 
+                className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
+                style={{ 
+                  zIndex: 999999,
+                  width: specialtyInputRef.current.offsetWidth,
+                  left: specialtyInputRef.current.offsetLeft,
+                  top: specialtyInputRef.current.offsetTop + specialtyInputRef.current.offsetHeight,
+                }}
+              >
+                {specialtySuggestions
+                  .filter(item => item.toLowerCase().includes(specialty.toLowerCase()) || specialty === "")
+                  .map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
+                      onMouseDown={() => handleSpecialtySelect(suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {/* Location suggestions dropdown - positioned absolutely */}
+            {showLocationSuggestions && locationInputRef.current && (
+              <div 
+                className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
+                style={{ 
+                  zIndex: 999999,
+                  width: locationInputRef.current.offsetWidth,
+                  left: locationInputRef.current.offsetLeft,
+                  top: locationInputRef.current.offsetTop + locationInputRef.current.offsetHeight,
+                }}
+              >
+                {locationSuggestions
+                  .filter(item => item.toLowerCase().includes(location.toLowerCase()) || location === "")
+                  .map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
+                      onMouseDown={() => handleLocationSelect(suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 mt-3 text-xs sm:text-sm text-gray-500">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900 text-xs">
                   ✓
                 </span>
                 <span>100% Gratuito</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900 text-xs">
                   ✓
                 </span>
                 <span>Recensioni autentiche di clienti reali</span>

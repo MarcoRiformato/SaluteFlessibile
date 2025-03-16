@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { MapPin, Star, Filter, Search } from "lucide-react"
 import DoctorPreviewModal from "./DoctorPreviewModal"
@@ -95,7 +95,19 @@ const doctors = [
 // Filter options
 const specialties = ["Tutti", "Medico di base", "Cardiologo", "Dermatologo", "Psicologo", "Fisioterapista"]
 
-const locations = ["Tutti", "Milano Centro", "Navigli", "Isola", "Porta Romana", "Città Studi"]
+const locations = [
+  "Tutti", 
+  "Milano", 
+  "Roma", 
+  "Torino", 
+  "Firenze", 
+  "Bologna", 
+  "Napoli", 
+  "Palermo", 
+  "Genova", 
+  "Bari", 
+  "Catania"
+]
 
 export default function DoctorList() {
   const searchParams = useSearchParams()
@@ -106,6 +118,14 @@ export default function DoctorList() {
   const [selectedSpecialty, setSelectedSpecialty] = useState("Tutti")
   const [selectedLocation, setSelectedLocation] = useState("Tutti")
   const [searchQuery, setSearchQuery] = useState("")
+  
+  // States for suggestions dropdowns
+  const [showSpecialtySuggestions, setShowSpecialtySuggestions] = useState(false)
+  const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
+  
+  // References to position the dropdowns
+  const specialtySelectRef = useRef<HTMLDivElement>(null)
+  const locationSelectRef = useRef<HTMLDivElement>(null)
 
   // Update filters from URL params on component mount
   useEffect(() => {
@@ -133,6 +153,17 @@ export default function DoctorList() {
       setSearchQuery(query)
     }
   }, [searchParams])
+
+  // Handler functions for selections
+  const handleSpecialtySelect = (value: string) => {
+    setSelectedSpecialty(value);
+    setShowSpecialtySuggestions(false);
+  }
+  
+  const handleLocationSelect = (value: string) => {
+    setSelectedLocation(value);
+    setShowLocationSuggestions(false);
+  }
 
   // Filter doctors based on selected filters and search query
   const filteredDoctors = doctors.filter((doctor) => {
@@ -163,47 +194,84 @@ export default function DoctorList() {
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Trova il tuo specialista</h1>
 
         {/* Search and filter bar */}
-        <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-6 sm:mb-8">
+        <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-6 sm:mb-8 relative" style={{ zIndex: 99999 }}>
           <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <div className="flex-1 relative" style={{ minWidth: 0 }}>
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-500" />
               <input
                 type="text"
                 placeholder="Cerca per nome o specialità"
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base bg-transparent"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex flex-1 gap-2 sm:gap-4">
-              <div className="flex-1">
-                <select
-                  value={selectedSpecialty}
-                  onChange={(e) => setSelectedSpecialty(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
+            
+            {/* Specialty select */}
+            <div 
+              ref={specialtySelectRef}
+              className="flex-1 relative" 
+              style={{ minWidth: 0 }}
+            >
+              <div 
+                className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none text-sm sm:text-base cursor-pointer flex items-center"
+                onClick={() => setShowSpecialtySuggestions(!showSpecialtySuggestions)}
+              >
+                {selectedSpecialty}
+              </div>
+              
+              {/* Specialty suggestions dropdown */}
+              {showSpecialtySuggestions && specialtySelectRef.current && (
+                <div 
+                  className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60 w-full mt-1"
+                  style={{ zIndex: 999999 }}
                 >
                   {specialties.map((specialty) => (
-                    <option key={specialty} value={specialty}>
+                    <div
+                      key={specialty}
+                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
+                      onMouseDown={() => handleSpecialtySelect(specialty)}
+                    >
                       {specialty}
-                    </option>
+                    </div>
                   ))}
-                </select>
+                </div>
+              )}
+            </div>
+            
+            {/* Location select */}
+            <div 
+              ref={locationSelectRef}
+              className="flex-1 relative"
+              style={{ minWidth: 0 }}
+            >
+              <div 
+                className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none text-sm sm:text-base cursor-pointer flex items-center"
+                onClick={() => setShowLocationSuggestions(!showLocationSuggestions)}
+              >
+                {selectedLocation}
               </div>
-              <div className="flex-1">
-                <select
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
+              
+              {/* Location suggestions dropdown */}
+              {showLocationSuggestions && locationSelectRef.current && (
+                <div 
+                  className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60 w-full mt-1"
+                  style={{ zIndex: 999999 }}
                 >
                   {locations.map((location) => (
-                    <option key={location} value={location}>
+                    <div
+                      key={location}
+                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
+                      onMouseDown={() => handleLocationSelect(location)}
+                    >
                       {location}
-                    </option>
+                    </div>
                   ))}
-                </select>
-              </div>
+                </div>
+              )}
             </div>
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 sm:px-6 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap text-sm sm:text-base">
+            
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 sm:px-6 py-2 rounded-lg transition-colors flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap text-sm sm:text-base flex-shrink-0">
               <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>Altri filtri</span>
             </button>
