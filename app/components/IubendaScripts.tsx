@@ -7,7 +7,6 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
-    _hotjarScript?: HTMLScriptElement;
     _iub: {
       csConfiguration: {
         siteId: number;
@@ -39,24 +38,6 @@ export default function IubendaScripts() {
       callback: {
         onReady: function() {
           // Step 3: Load analytics only after Iubenda is ready
-          
-          // Hotjar
-          const hotjarScript = document.createElement('script');
-          hotjarScript.type = 'text/javascript';
-          hotjarScript.innerHTML = `
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:5332577,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-          `;
-          document.body.appendChild(hotjarScript);
-          
-          // Store reference to hotjar script for cleanup
-          window._hotjarScript = hotjarScript;
           
           // Google Analytics
           const gaScript1 = document.createElement('script');
@@ -105,10 +86,6 @@ export default function IubendaScripts() {
         document.head.removeChild(iubendaConfig);
         document.head.removeChild(autoBlockingScript);
         document.head.removeChild(mainScript);
-        // Clean up Hotjar script if it exists
-        if (window._hotjarScript) {
-          document.body.removeChild(window._hotjarScript);
-        }
       } catch (e) {
         // Ignore cleanup errors
       }
