@@ -7,6 +7,7 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
+    _hotjarScript?: HTMLScriptElement;
     _iub: {
       csConfiguration: {
         siteId: number;
@@ -52,7 +53,10 @@ export default function IubendaScripts() {
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
           `;
-          document.head.appendChild(hotjarScript);
+          document.body.appendChild(hotjarScript);
+          
+          // Store reference to hotjar script for cleanup
+          window._hotjarScript = hotjarScript;
           
           // Google Analytics
           const gaScript1 = document.createElement('script');
@@ -101,7 +105,10 @@ export default function IubendaScripts() {
         document.head.removeChild(iubendaConfig);
         document.head.removeChild(autoBlockingScript);
         document.head.removeChild(mainScript);
-        // Note: We're not cleaning up analytics scripts as they might still be in use
+        // Clean up Hotjar script if it exists
+        if (window._hotjarScript) {
+          document.body.removeChild(window._hotjarScript);
+        }
       } catch (e) {
         // Ignore cleanup errors
       }
