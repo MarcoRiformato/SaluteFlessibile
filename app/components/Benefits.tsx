@@ -51,7 +51,7 @@ export default function Benefits() {
           ))}
         </div>
 
-        <div className="mt-10 sm:mt-12 md:mt-16 text-center">
+        {/* <div className="mt-10 sm:mt-12 md:mt-16 text-center">
           <div className="inline-block bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-yellow-100 w-full max-w-md">
             <p className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">Più di 10.000 pazienti soddisfatti</p>
             <div className="flex items-center justify-center gap-2 sm:gap-4 text-yellow-500">
@@ -63,7 +63,7 @@ export default function Benefits() {
             </div>
             <p className="text-sm sm:text-base text-gray-600 mt-2">Rating medio 4.8/5 basato su 2.500+ recensioni</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   )

@@ -24,6 +24,9 @@ export default function Header() {
 
   return (
     <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-yellow-100">
+      <div className="bg-blue-500 text-white py-2 text-center text-sm">
+        <p>🚀 FlexiCare è in fase di sviluppo - Iscriviti ora per l'accesso anticipato!</p>
+      </div>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <div className="w-[140px] h-[50px] overflow-hidden relative rounded-md">

@@ -170,9 +170,14 @@ export default function HeroSection() {
                 </div>
                 <div className="mt-0 sm:mt-1">di fiducia</div>
               </h1>
-              <p className="text-lg sm:text-xl text-gray-600 mt-3 md:mt-6 max-w-2xl mx-auto sm:mx-0 text-center sm:text-left">
-                La piattaforma con recensioni affidabili che trova rapidamente il professionista adatto a <strong>te</strong>
-              </p>
+              <div className="relative">
+                <div className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold mb-4 inline-block">
+                  🚀 In arrivo a breve
+                </div>
+                <p className="text-lg sm:text-xl text-gray-600 mt-3 md:mt-6 max-w-2xl mx-auto sm:mx-0 text-center sm:text-left">
+                  La piattaforma con recensioni affidabili che troverà rapidamente il professionista adatto a <strong>te</strong>. Iscriviti ora per essere tra i primi a provarla!
+                </p>
+              </div>
             </div>
 
             {/* Illustration - hidden on mobile, visible on larger screens */}

@@ -78,27 +78,26 @@ export default function SpecialistTabs() {
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Scegli tra i migliori specialisti</h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Accedi a una rete di professionisti verificati e prenota la tua visita in tutta sicurezza
+            Presto potrai trovare il professionista perfetto per te. Registrati ora per essere tra i primi a utilizzare il servizio.
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
           {specialists.map((specialist, index) => (
-            <button
+            <div
               key={specialist.name}
               className={`flex flex-col items-center p-3 sm:p-4 md:p-6 rounded-xl transition-all duration-300 ${
                 activeTab === index
                   ? "bg-yellow-400 text-gray-900 shadow-lg transform scale-105"
                   : "bg-white text-gray-600 hover:bg-yellow-50 border border-gray-100"
               }`}
-              onClick={() => handleSpecialistClick(specialist, index)}
             >
               <specialist.icon
                 className={`h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-3 ${activeTab === index ? "text-gray-900" : "text-yellow-500"}`}
               />
               <span className="font-semibold text-center text-xs sm:text-sm md:text-base">{specialist.name}</span>
               <p className="text-[10px] sm:text-xs mt-1 opacity-80 hidden sm:block">{specialist.description}</p>
-            </button>
+            </div>
           ))}
         </div>
 
@@ -140,12 +139,25 @@ export default function SpecialistTabs() {
         )}
 
         <div className="mt-8 sm:mt-12 text-center">
-          <Button
-            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-xl text-sm sm:text-base"
-            onClick={() => router.push("/doctors")}
-          >
-            Mostra tutti gli specialisti
-          </Button>
+          <div className="inline-block bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-yellow-100">
+            <p className="text-base sm:text-lg text-gray-900 mb-4">
+              <span className="font-semibold">Vuoi essere tra i primi a provare FlexiCare?</span>
+              <br />
+              <span className="text-gray-600">Registrati ora per ricevere l'accesso anticipato e offerte esclusive al lancio.</span>
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <input
+                type="email"
+                placeholder="Il tuo indirizzo email"
+                className="w-full sm:w-auto px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              />
+              <button
+                className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors flex items-center justify-center"
+              >
+                Iscriviti ora
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
