@@ -30,17 +30,26 @@ export async function POST(request: Request) {
     if (!result.success) {
       console.log('Mailchimp subscription failed:', result.error);
       return NextResponse.json(
-        { error: 'Failed to subscribe' },
+        { 
+          error: result.error,
+          details: result.errorDetails 
+        },
         { status: 500 }
       );
     }
 
     console.log('Subscription successful');
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Subscription error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: error.message || 'Internal server error',
+        details: {
+          message: error.message,
+          stack: error.stack
+        }
+      },
       { status: 500 }
     );
   }

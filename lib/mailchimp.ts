@@ -1,4 +1,5 @@
 import mailchimp from '@mailchimp/mailchimp_marketing';
+import type { Status } from '@mailchimp/mailchimp_marketing';
 
 // Initialize Mailchimp
 mailchimp.setConfig({
@@ -21,11 +22,13 @@ interface MergeFields {
 
 export async function subscribeToMailchimp(email: string, type: SubscriptionType, merge_fields?: MergeFields) {
   try {
-    console.log('Mailchimp config:', {
-      apiKey: process.env.MAILCHIMP_API_KEY ? 'Present' : 'Missing',
+    // Log full configuration for debugging
+    const config = {
+      apiKey: process.env.MAILCHIMP_API_KEY ? `${process.env.MAILCHIMP_API_KEY.slice(0, 5)}...` : 'Missing',
       server: process.env.MAILCHIMP_SERVER_PREFIX,
       audienceId: AUDIENCE_ID,
-    });
+    };
+    console.log('Mailchimp config:', config);
 
     if (!AUDIENCE_ID) {
       throw new Error('Mailchimp audience ID is not configured');
@@ -39,25 +42,40 @@ export async function subscribeToMailchimp(email: string, type: SubscriptionType
       throw new Error('Mailchimp server prefix is not configured');
     }
 
-    console.log('Adding member to Mailchimp:', { email, type, merge_fields });
-    const response = await mailchimp.lists.addListMember(AUDIENCE_ID, {
+    // Log the exact request we're about to make
+    const memberData = {
       email_address: email,
-      status: 'subscribed',
+      status: 'subscribed' as Status,
       tags: [type],
       merge_fields: merge_fields || {},
-    });
+    };
+    console.log('Mailchimp request data:', memberData);
 
+    const response = await mailchimp.lists.addListMember(AUDIENCE_ID, memberData);
     console.log('Mailchimp API response:', response);
     return { success: true, data: response };
   } catch (error: any) {
-    console.error('Mailchimp subscription error:', {
+    // Enhanced error logging
+    const errorDetails = {
       message: error.message,
       stack: error.stack,
       response: error.response?.body,
-    });
+      status: error.status,
+      title: error.title,
+      detail: error.detail,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        headers: error.config?.headers,
+      }
+    };
+    console.error('Detailed Mailchimp error:', errorDetails);
+
+    // Return more detailed error information
     return { 
       success: false, 
-      error: error.response?.body?.detail || error.message 
+      error: error.response?.body?.detail || error.detail || error.message,
+      errorDetails 
     };
   }
 } 
