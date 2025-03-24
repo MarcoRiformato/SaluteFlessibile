@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import IubendaScripts from "./components/IubendaScripts"
 import Script from "next/script"
 import MetaPixel from "./components/MetaPixel"
+import AIDoctorAssistant from "@/components/AIDoctorAssistant"
 
 export const metadata: Metadata = {
   title: "FlexiCare - Trova il tuo specialista di fiducia",
@@ -38,6 +39,7 @@ export default function RootLayout({
         {children}
         <IubendaScripts />
         <MetaPixel />
+        <AIDoctorAssistant />
       </body>
     </html>
   )

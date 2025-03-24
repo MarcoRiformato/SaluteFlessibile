@@ -194,7 +194,7 @@ export default function DoctorList() {
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Trova il tuo specialista</h1>
 
         {/* Search and filter bar */}
-        <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-6 sm:mb-8 relative" style={{ zIndex: 99999 }}>
+        <div className="bg-white rounded-xl shadow-md p-3 sm:p-4 mb-6 sm:mb-8 relative" style={{ zIndex: 10 }}>
           <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
             <div className="flex-1 relative" style={{ minWidth: 0 }}>
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-500" />
@@ -224,7 +224,7 @@ export default function DoctorList() {
               {showSpecialtySuggestions && specialtySelectRef.current && (
                 <div 
                   className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60 w-full mt-1"
-                  style={{ zIndex: 999999 }}
+                  style={{ zIndex: 20 }}
                 >
                   {specialties.map((specialty) => (
                     <div
@@ -256,7 +256,7 @@ export default function DoctorList() {
               {showLocationSuggestions && locationSelectRef.current && (
                 <div 
                   className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60 w-full mt-1"
-                  style={{ zIndex: 999999 }}
+                  style={{ zIndex: 20 }}
                 >
                   {locations.map((location) => (
                     <div

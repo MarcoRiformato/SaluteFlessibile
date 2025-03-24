@@ -190,7 +190,7 @@ export default function HeroSection() {
           </div>
 
           {/* Search Bar - separate from illustration */}
-          <div className="relative" style={{ zIndex: 99999 }}>
+          <div className="relative" style={{ zIndex: 10 }}>
             <div className="bg-white rounded-xl shadow-lg border border-gray-200">
               <div className="flex flex-col md:flex-row">
                 {/* Specialty search field */}
@@ -269,7 +269,7 @@ export default function HeroSection() {
               <div 
                 className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
                 style={{ 
-                  zIndex: 999999,
+                  zIndex: 20,
                   width: specialtyInputRef.current.offsetWidth,
                   left: specialtyInputRef.current.offsetLeft,
                   top: specialtyInputRef.current.offsetTop + specialtyInputRef.current.offsetHeight,
@@ -294,7 +294,7 @@ export default function HeroSection() {
               <div 
                 className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
                 style={{ 
-                  zIndex: 999999,
+                  zIndex: 20,
                   width: locationInputRef.current.offsetWidth,
                   left: locationInputRef.current.offsetLeft,
                   top: locationInputRef.current.offsetTop + locationInputRef.current.offsetHeight,
