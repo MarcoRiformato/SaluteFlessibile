@@ -11,7 +11,15 @@ const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
 
 export type SubscriptionType = 'CLIENTS' | 'DOCTORS';
 
-export async function subscribeToMailchimp(email: string, type: SubscriptionType) {
+interface MergeFields {
+  FNAME?: string;
+  LNAME?: string;
+  PHONE?: string;
+  CITY?: string;
+  SPEC?: string;
+}
+
+export async function subscribeToMailchimp(email: string, type: SubscriptionType, merge_fields?: MergeFields) {
   try {
     console.log('Mailchimp config:', {
       apiKey: process.env.MAILCHIMP_API_KEY ? 'Present' : 'Missing',
@@ -31,11 +39,12 @@ export async function subscribeToMailchimp(email: string, type: SubscriptionType
       throw new Error('Mailchimp server prefix is not configured');
     }
 
-    console.log('Adding member to Mailchimp:', { email, type });
+    console.log('Adding member to Mailchimp:', { email, type, merge_fields });
     const response = await mailchimp.lists.addListMember(AUDIENCE_ID, {
       email_address: email,
       status: 'subscribed',
       tags: [type],
+      merge_fields: merge_fields || {},
     });
 
     console.log('Mailchimp API response:', response);

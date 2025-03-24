@@ -4,8 +4,8 @@ import { subscribeToMailchimp, SubscriptionType } from '@/lib/mailchimp';
 export async function POST(request: Request) {
   try {
     console.log('Received subscription request');
-    const { email, type } = await request.json();
-    console.log('Subscription data:', { email, type });
+    const { email, type, merge_fields } = await request.json();
+    console.log('Subscription data:', { email, type, merge_fields });
 
     if (!email || !type) {
       console.log('Missing email or type');
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     console.log('Calling Mailchimp API...');
-    const result = await subscribeToMailchimp(email, type as SubscriptionType);
+    const result = await subscribeToMailchimp(email, type as SubscriptionType, merge_fields);
     console.log('Mailchimp API response:', result);
 
     if (!result.success) {

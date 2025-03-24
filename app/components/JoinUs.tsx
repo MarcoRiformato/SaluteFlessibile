@@ -6,13 +6,14 @@ import { Input, Button } from "@/components/ui"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { toast } from "sonner"
+import type { SubscriptionType } from "@/lib/mailchimp"
 
 export default function JoinUs() {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     email: "",
-    type: "PAZIENTE",
+    type: "CLIENTS" as SubscriptionType,
     city: "",
     phone: "",
     specialization: ""
@@ -122,13 +123,28 @@ export default function JoinUs() {
 
     setIsSubmitting(true)
     try {
-      console.log('Submitting email:', formData.email);
+      console.log('Submitting form data:', formData);
+      
+      // Create the subscription payload
+      const subscriptionData = {
+        email: formData.email,
+        type: formData.type === "CLIENTS" ? "CLIENTS" : "DOCTORS",
+        // Additional metadata that could be useful for Mailchimp
+        merge_fields: {
+          FNAME: formData.name,
+          LNAME: formData.surname,
+          PHONE: formData.phone,
+          CITY: formData.city,
+          SPEC: formData.specialization
+        }
+      };
+
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(subscriptionData),
       })
 
       const data = await response.json()
@@ -143,7 +159,7 @@ export default function JoinUs() {
         name: "",
         surname: "",
         email: "",
-        type: "PAZIENTE",
+        type: "CLIENTS",
         city: "",
         phone: "",
         specialization: ""
@@ -206,8 +222,8 @@ export default function JoinUs() {
                       <input
                         type="radio"
                         name="type"
-                        value="PAZIENTE"
-                        checked={formData.type === "PAZIENTE"}
+                        value="CLIENTS"
+                        checked={formData.type === "CLIENTS"}
                         onChange={handleChange}
                         className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
                         required
@@ -218,8 +234,8 @@ export default function JoinUs() {
                       <input
                         type="radio"
                         name="type"
-                        value="PROFESSIONISTA"
-                        checked={formData.type === "PROFESSIONISTA"}
+                        value="DOCTORS"
+                        checked={formData.type === "DOCTORS"}
                         onChange={handleChange}
                         className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
                         required
@@ -227,7 +243,7 @@ export default function JoinUs() {
                       <span className="text-sm text-gray-700">Professionista</span>
                     </label>
                   </div>
-                  {formData.type === "PROFESSIONISTA" && (
+                  {formData.type === "DOCTORS" && (
                     <Input
                       type="text"
                       name="specialization"
