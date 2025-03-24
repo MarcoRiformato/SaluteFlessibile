@@ -49,14 +49,17 @@ export async function subscribeToMailchimp({ email, type, tags = [], merge_field
       throw new Error('Mailchimp server prefix is not configured');
     }
 
-    // Ensure type is included in tags
-    const allTags = Array.from(new Set([type, ...tags]));
+    // Create final tags array with type and any additional tags
+    const finalTags: string[] = [type];
+    if (tags.length > 0) {
+      finalTags.push(...tags);
+    }
 
     // Log the exact request we're about to make
     const memberData = {
       email_address: email,
       status: 'subscribed' as Status,
-      tags: allTags,
+      tags: finalTags,
       merge_fields,
     };
     console.log('Mailchimp request data:', memberData);

@@ -134,14 +134,15 @@ export default function JoinUs() {
       const subscriptionData = {
         email: formData.email,
         type: formData.type,
-        // Include specialization as a tag if it's a doctor
-        tags: formData.type === "DOCTORS" ? [formData.type, formData.specialization] : [formData.type],
+        // Only include specialization tag for doctors with non-empty specialization
+        tags: formData.type === "DOCTORS" && formData.specialization ? [formData.specialization] : [],
         merge_fields: {
           FNAME: formData.name,
           LNAME: formData.surname,
           PHONE: formData.phone,
           CITY: formData.city,
-          SPEC: formData.type === "DOCTORS" ? formData.specialization : ""
+          // Only include specialization in merge fields for doctors
+          ...(formData.type === "DOCTORS" && { SPEC: formData.specialization })
         }
       };
 
