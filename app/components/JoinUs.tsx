@@ -109,6 +109,11 @@ export default function JoinUs() {
       return
     }
 
+    if (formData.type === "DOCTORS" && !formData.specialization) {
+      toast.error("Inserisci la tua specializzazione")
+      return
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
       toast.error("Inserisci un indirizzo email valido")
@@ -128,14 +133,15 @@ export default function JoinUs() {
       // Create the subscription payload
       const subscriptionData = {
         email: formData.email,
-        type: formData.type === "CLIENTS" ? "CLIENTS" : "DOCTORS",
-        // Additional metadata that could be useful for Mailchimp
+        type: formData.type,
+        // Include specialization as a tag if it's a doctor
+        tags: formData.type === "DOCTORS" ? [formData.type, formData.specialization] : [formData.type],
         merge_fields: {
           FNAME: formData.name,
           LNAME: formData.surname,
           PHONE: formData.phone,
           CITY: formData.city,
-          SPEC: formData.specialization
+          SPEC: formData.type === "DOCTORS" ? formData.specialization : ""
         }
       };
 

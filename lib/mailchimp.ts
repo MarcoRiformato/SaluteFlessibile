@@ -20,7 +20,14 @@ interface MergeFields {
   SPEC?: string;
 }
 
-export async function subscribeToMailchimp(email: string, type: SubscriptionType, merge_fields?: MergeFields) {
+interface SubscribeData {
+  email: string;
+  type: SubscriptionType;
+  tags?: string[];
+  merge_fields?: MergeFields;
+}
+
+export async function subscribeToMailchimp({ email, type, tags = [], merge_fields = {} }: SubscribeData) {
   try {
     // Log full configuration for debugging
     const config = {
@@ -42,12 +49,15 @@ export async function subscribeToMailchimp(email: string, type: SubscriptionType
       throw new Error('Mailchimp server prefix is not configured');
     }
 
+    // Ensure type is included in tags
+    const allTags = Array.from(new Set([type, ...tags]));
+
     // Log the exact request we're about to make
     const memberData = {
       email_address: email,
       status: 'subscribed' as Status,
-      tags: [type],
-      merge_fields: merge_fields || {},
+      tags: allTags,
+      merge_fields,
     };
     console.log('Mailchimp request data:', memberData);
 
