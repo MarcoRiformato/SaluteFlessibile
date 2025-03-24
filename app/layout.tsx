@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import IubendaScripts from "./components/IubendaScripts"
 import Script from "next/script"
+import MetaPixel from "./components/MetaPixel"
 
 export const metadata: Metadata = {
   title: "FlexiCare - Trova il tuo specialista di fiducia",
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body className="overflow-x-hidden">
         {children}
         <IubendaScripts />
+        <MetaPixel />
       </body>
     </html>
   )

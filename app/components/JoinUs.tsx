@@ -261,8 +261,8 @@ export default function JoinUs() {
                         >
                           {city}
                         </button>
-                      ))}
-                    </div>
+              ))}
+            </div>
                   )}
                 </div>
               </div>
