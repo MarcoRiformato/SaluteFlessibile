@@ -70,6 +70,7 @@ export default function SpecialistTabs() {
 
     setIsSubmitting(true)
     try {
+      console.log('Submitting email:', email);
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
@@ -82,6 +83,7 @@ export default function SpecialistTabs() {
       })
 
       const data = await response.json()
+      console.log('API response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || "Errore durante l'iscrizione")
@@ -89,8 +91,9 @@ export default function SpecialistTabs() {
 
       toast.success("Grazie per esserti iscritto!")
       setEmail("")
-    } catch (error) {
-      toast.error("Si è verificato un errore. Riprova più tardi.")
+    } catch (error: any) {
+      console.error('Subscription error:', error);
+      toast.error(error.message || "Si è verificato un errore. Riprova più tardi.")
     } finally {
       setIsSubmitting(false)
     }

@@ -122,6 +122,7 @@ export default function JoinUs() {
 
     setIsSubmitting(true)
     try {
+      console.log('Submitting email:', formData.email);
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
@@ -131,6 +132,7 @@ export default function JoinUs() {
       })
 
       const data = await response.json()
+      console.log('API response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || "Errore durante l'iscrizione")
@@ -146,8 +148,9 @@ export default function JoinUs() {
         phone: "",
         specialization: ""
       })
-    } catch (error) {
-      toast.error("Si è verificato un errore. Riprova più tardi.")
+    } catch (error: any) {
+      console.error('Subscription error:', error);
+      toast.error(error.message || "Si è verificato un errore. Riprova più tardi.")
     } finally {
       setIsSubmitting(false)
     }
