@@ -14,7 +14,8 @@ export default function JoinUs() {
     email: "",
     type: "PAZIENTE",
     city: "",
-    phone: ""
+    phone: "",
+    specialization: ""
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [citySuggestions, setCitySuggestions] = useState<string[]>([])
@@ -142,7 +143,8 @@ export default function JoinUs() {
         email: "",
         type: "PAZIENTE",
         city: "",
-        phone: ""
+        phone: "",
+        specialization: ""
       })
     } catch (error) {
       toast.error("Si è verificato un errore. Riprova più tardi.")
@@ -194,60 +196,75 @@ export default function JoinUs() {
                 required
                 autoComplete="email"
               />
-              <div className="flex gap-4 py-1">
-                <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="type"
-                    value="PAZIENTE"
-                    checked={formData.type === "PAZIENTE"}
-                    onChange={handleChange}
-                    className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
-                    required
-                  />
-                  <span className="text-sm text-gray-700">Paziente</span>
-                </label>
-                <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="type"
-                    value="PROFESSIONISTA"
-                    checked={formData.type === "PROFESSIONISTA"}
-                    onChange={handleChange}
-                    className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
-                    required
-                  />
-                  <span className="text-sm text-gray-700">Professionista</span>
-                </label>
-              </div>
-              <div className="relative" ref={cityInputRef}>
-                <Input
-                  type="text"
-                  name="city"
-                  placeholder="Città"
-                  value={formData.city}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyDown}
-                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                  required
-                  autoComplete="address-level2"
-                />
-                {showSuggestions && citySuggestions.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                    {citySuggestions.map((city, index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => selectCity(city)}
-                        className={`w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors ${
-                          index === selectedSuggestionIndex ? 'bg-gray-50' : ''
-                        }`}
-                      >
-                        {city}
-                      </button>
-                    ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-4 py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="type"
+                        value="PAZIENTE"
+                        checked={formData.type === "PAZIENTE"}
+                        onChange={handleChange}
+                        className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
+                        required
+                      />
+                      <span className="text-sm text-gray-700">Paziente</span>
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="type"
+                        value="PROFESSIONISTA"
+                        checked={formData.type === "PROFESSIONISTA"}
+                        onChange={handleChange}
+                        className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
+                        required
+                      />
+                      <span className="text-sm text-gray-700">Professionista</span>
+                    </label>
                   </div>
-                )}
+                  {formData.type === "PROFESSIONISTA" && (
+                    <Input
+                      type="text"
+                      name="specialization"
+                      placeholder="La tua specializzazione"
+                      value={formData.specialization}
+                      onChange={handleChange}
+                      className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                      required
+                    />
+                  )}
+                </div>
+                <div className="relative" ref={cityInputRef}>
+                  <Input
+                    type="text"
+                    name="city"
+                    placeholder="Città"
+                    value={formData.city}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                    required
+                    autoComplete="address-level2"
+                  />
+                  {showSuggestions && citySuggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+                      {citySuggestions.map((city, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => selectCity(city)}
+                          className={`w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors ${
+                            index === selectedSuggestionIndex ? 'bg-gray-50' : ''
+                          }`}
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               <Input
                 type="tel"
