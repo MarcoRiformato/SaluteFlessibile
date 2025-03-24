@@ -176,33 +176,6 @@ export default function SpecialistTabs() {
             </div>
           </div>
         )}
-
-        <div className="mt-8 sm:mt-12 text-center">
-          <div className="inline-block bg-white rounded-xl p-4 sm:p-6 shadow-lg border border-yellow-100">
-            <p className="text-base sm:text-lg text-gray-900 mb-4">
-              <span className="font-semibold">Vuoi essere tra i primi a provare FlexiCare?</span>
-              <br />
-              <span className="text-gray-600">Registrati ora per ricevere l'accesso anticipato e offerte esclusive al lancio.</span>
-            </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <input
-                type="email"
-                placeholder="Il tuo indirizzo email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full sm:w-auto px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                required
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "Iscrizione in corso..." : "Iscriviti ora"}
-              </button>
-            </form>
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -42,7 +42,7 @@ export default function Benefits() {
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4 text-gray-900">{benefit.title}</h3>
               <p className="text-sm sm:text-base text-gray-600">{benefit.description}</p>
-              {index < benefits.length - 1 && index !== 1 && (
+              {index < benefits.length - 1 && index === 1 && (
                 <div className="hidden md:block absolute right-[-1.5rem] lg:right-[-2rem] top-[50%] text-yellow-500 text-3xl lg:text-4xl transform -translate-y-1/2">
                   →
                 </div>

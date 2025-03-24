@@ -171,9 +171,6 @@ export default function HeroSection() {
                 <div className="mt-0 sm:mt-1">di fiducia</div>
               </h1>
               <div className="relative">
-                <div className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold mb-4 inline-block">
-                  🚀 In arrivo a breve
-                </div>
                 <p className="text-lg sm:text-xl text-gray-600 mt-3 md:mt-6 max-w-2xl mx-auto sm:mx-0 text-center sm:text-left">
                   La piattaforma con recensioni affidabili che troverà rapidamente il professionista adatto a <strong>te</strong>. Iscriviti ora per essere tra i primi a provarla!
                 </p>
@@ -184,7 +181,7 @@ export default function HeroSection() {
             <div className="hidden md:block absolute top-0 right-0 w-[45%] h-full pointer-events-none z-10 flex items-center justify-center">
               <div className="relative w-full h-full flex items-center justify-center">
                 <img
-                  src="/dottore-abbraccia.png"
+                  src="/hero2.webp"
                   alt="Medical illustration"
                   className="w-auto h-auto max-h-[175%] max-w-[150%] object-contain absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
                 />
