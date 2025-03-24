@@ -17,7 +17,7 @@ interface MergeFields {
   LNAME?: string;
   PHONE?: string;
   CITY?: string;
-  SPEC?: string;
+  Specializzazione?: string;
 }
 
 interface SubscribeData {
