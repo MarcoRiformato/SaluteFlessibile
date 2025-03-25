@@ -136,14 +136,16 @@ export default function JoinUs() {
         type: formData.type,
         tags: [], // No additional tags needed
         merge_fields: {
-          MERGE1: formData.name,           // Nome
-          MERGE2: formData.surname,        // Cognome
-          MERGE3: formData.city,           // Indirizzo
-          MERGE4: formData.phone,          // Phone
-          MERGE7: formData.type === "DOCTORS" ? "Dottore" : "Paziente",  // Tipo
-          ...(formData.type === "DOCTORS" && { MERGE8: formData.specialization })  // Specializzazione
+          MERGE1: formData.name,
+          MERGE2: formData.surname,
+          MERGE3: formData.city,
+          MERGE4: formData.phone,
+          MERGE7: formData.type === "DOCTORS" ? "Dottore" : "Paziente",
+          MERGE8: formData.specialization
         }
       };
+
+      console.log('Subscription data being sent:', subscriptionData);
 
       const response = await fetch("/api/subscribe", {
         method: "POST",
