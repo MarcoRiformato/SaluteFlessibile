@@ -13,11 +13,12 @@ const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
 export type SubscriptionType = 'CLIENTS' | 'DOCTORS';
 
 interface MergeFields {
-  FNAME?: string;
-  LNAME?: string;
-  PHONE?: string;
-  CITY?: string;
-  Specializzazione?: string;
+  MERGE1?: string;  // Nome
+  MERGE2?: string;  // Cognome
+  MERGE3?: string;  // Indirizzo
+  MERGE4?: string;  // Phone
+  MERGE7?: string;  // Tipo
+  MERGE8?: string;  // Specializzazione
 }
 
 interface SubscribeData {

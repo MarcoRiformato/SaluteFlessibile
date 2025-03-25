@@ -136,12 +136,12 @@ export default function JoinUs() {
         type: formData.type,
         tags: [], // No additional tags needed
         merge_fields: {
-          FNAME: formData.name,
-          LNAME: formData.surname,
-          PHONE: formData.phone,
-          CITY: formData.city,
-          // Only include specialization in merge fields for doctors
-          ...(formData.type === "DOCTORS" && { Specializzazione: formData.specialization })
+          MERGE1: formData.name,           // Nome
+          MERGE2: formData.surname,        // Cognome
+          MERGE3: formData.city,           // Indirizzo
+          MERGE4: formData.phone,          // Phone
+          MERGE7: formData.type === "DOCTORS" ? "Dottore" : "Paziente",  // Tipo
+          ...(formData.type === "DOCTORS" && { MERGE8: formData.specialization })  // Specializzazione
         }
       };
 
