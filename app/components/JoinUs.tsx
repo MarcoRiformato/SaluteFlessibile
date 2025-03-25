@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Input, Button } from "@/components/ui"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
@@ -9,6 +10,7 @@ import { toast } from "sonner"
 import type { SubscriptionType } from "@/lib/mailchimp"
 
 export default function JoinUs() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -33,6 +35,39 @@ export default function JoinUs() {
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const scrollToForm = () => {
+    const formElement = document.getElementById('join-us')
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  useEffect(() => {
+    // Add click event listeners to all clickable elements
+    const addClickListeners = () => {
+      const clickableElements = document.querySelectorAll('a, button, input[type="submit"], [role="button"]')
+      clickableElements.forEach(element => {
+        if (!element.closest('#join-us')) { // Don't add listeners to elements inside the form
+          element.addEventListener('click', (e) => {
+            e.preventDefault()
+            scrollToForm()
+          })
+        }
+      })
+    }
+
+    addClickListeners()
+    return () => {
+      // Clean up event listeners
+      const clickableElements = document.querySelectorAll('a, button, input[type="submit"], [role="button"]')
+      clickableElements.forEach(element => {
+        if (!element.closest('#join-us')) {
+          element.removeEventListener('click', scrollToForm)
+        }
+      })
+    }
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,11 +165,10 @@ export default function JoinUs() {
     try {
       console.log('Submitting form data:', formData);
       
-      // Create the subscription payload with properly formatted address
       const subscriptionData = {
         email: formData.email,
         type: formData.type,
-        tags: [], // No additional tags needed
+        tags: [],
         merge_fields: {
           FNAME: formData.name,
           LNAME: formData.surname,
@@ -163,15 +197,7 @@ export default function JoinUs() {
       }
 
       toast.success("Grazie per esserti iscritto! Ti contatteremo presto.")
-      setFormData({
-        name: "",
-        surname: "",
-        email: "",
-        type: "CLIENTS",
-        city: "",
-        phone: "",
-        specialization: ""
-      })
+      router.push('/thank-you')
     } catch (error: any) {
       console.error('Subscription error:', error);
       toast.error(error.message || "Si è verificato un errore. Riprova più tardi.")
@@ -248,80 +274,77 @@ export default function JoinUs() {
                         className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
                         required
                       />
-                      <span className="text-sm text-gray-700">Professionista</span>
+                      <span className="text-sm text-gray-700">Dottore</span>
                     </label>
+                  </div>
+                  <Input
+                    type="tel"
+                    name="phone"
+                    placeholder="Telefono"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                    required
+                    autoComplete="tel"
+                  />
+                  <div className="relative" ref={cityInputRef}>
+                    <Input
+                      type="text"
+                      name="city"
+                      placeholder="Città"
+                      value={formData.city}
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown}
+                      className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                      required
+                      autoComplete="off"
+                    />
+                    {showSuggestions && citySuggestions.length > 0 && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                        {citySuggestions.map((city, index) => (
+                          <div
+                            key={city}
+                            className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${
+                              index === selectedSuggestionIndex ? 'bg-gray-50' : ''
+                            }`}
+                            onClick={() => selectCity(city)}
+                          >
+                            {city}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {formData.type === "DOCTORS" && (
                     <Input
                       type="text"
                       name="specialization"
-                      placeholder="La tua specializzazione"
+                      placeholder="Specializzazione"
                       value={formData.specialization}
                       onChange={handleChange}
                       className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                      required
+                      required={formData.type === "DOCTORS"}
                     />
                   )}
                 </div>
-                <div className="relative" ref={cityInputRef}>
-                  <Input
-                    type="text"
-                    name="city"
-                    placeholder="Città"
-                    value={formData.city}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                    className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                    required
-                    autoComplete="address-level2"
-                  />
-                  {showSuggestions && citySuggestions.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                      {citySuggestions.map((city, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          onClick={() => selectCity(city)}
-                          className={`w-full px-3 py-1.5 text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors ${
-                            index === selectedSuggestionIndex ? 'bg-gray-50' : ''
-                          }`}
-                        >
-                          {city}
-                        </button>
-              ))}
-            </div>
-                  )}
-                </div>
               </div>
-              <Input
-                type="tel"
-                name="phone"
-                placeholder="Numero di telefono"
-                value={formData.phone}
-                onChange={handleChange}
-                className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                required
-                autoComplete="tel"
-                pattern="[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}"
-              />
-              <Button 
+              <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium rounded-lg text-sm py-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-1"
+                className="w-full bg-yellow-400 text-gray-900 hover:bg-yellow-500 transition-colors"
               >
-                {isSubmitting ? "Iscrizione in corso..." : "Fai il primo passo insieme a noi"}
+                {isSubmitting ? "Invio in corso..." : "Invia"}
               </Button>
             </form>
           </div>
-          <div className="w-full md:w-1/2 flex justify-center mt-4 md:mt-0">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-200 to-yellow-400 rounded-lg blur-xl opacity-20"></div>
+          <div className="w-full md:w-1/2">
+            <div className="relative aspect-square">
               <Image
-                src="/dottori-bici.webp"
-                alt="Dottore che usa FlexiCare"
-                width={400}
-                height={400}
-                className="relative rounded-lg shadow-lg w-[250px] sm:w-[300px] md:w-[350px] h-auto"
+                src="/images/join-us-image.jpg"
+                alt="Join us"
+                fill
+                className="object-cover rounded-lg"
+                priority
               />
             </div>
           </div>

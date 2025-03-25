@@ -100,24 +100,28 @@ export default function HeroSection() {
     }
   }, [])
 
-  const handleSearch = () => {
-    // Navigate to doctors page with search params
-    const params = new URLSearchParams()
-    if (specialty) params.append("specialty", specialty)
-    if (location) params.append("location", location)
-    if (date) params.append("date", date.toISOString())
+  const scrollToForm = () => {
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
-    router.push(`/doctors?${params.toString()}`)
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    scrollToForm()
   }
 
   const handleSpecialtySelect = (value: string) => {
     setSpecialty(value)
     setShowSpecialtySuggestions(false)
+    scrollToForm()
   }
 
   const handleLocationSelect = (value: string) => {
     setLocation(value)
     setShowLocationSuggestions(false)
+    scrollToForm()
   }
 
   const formatSelectedDate = (date: Date | undefined) => {
@@ -191,141 +195,42 @@ export default function HeroSection() {
 
           {/* Search Bar - separate from illustration */}
           <div className="relative" style={{ zIndex: 10 }}>
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200">
+            <div 
+              className="bg-white rounded-xl shadow-lg border border-gray-200 cursor-pointer" 
+              onClick={scrollToForm}
+            >
               <div className="flex flex-col md:flex-row">
                 {/* Specialty search field */}
-                <div 
-                  ref={specialtyInputRef}
-                  className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative"
-                  style={{ minWidth: 0 }}
-                >
+                <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative">
                   <Search className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Prestazione o specialista"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base"
-                    value={specialty}
-                    onChange={(e) => setSpecialty(e.target.value)}
-                    onFocus={() => setShowSpecialtySuggestions(true)}
-                    onBlur={() => setTimeout(() => setShowSpecialtySuggestions(false), 200)}
-                  />
+                  <div className="w-full text-gray-500 text-sm md:text-base">
+                    Prestazione o specialista
+                  </div>
                 </div>
 
                 {/* Location search field */}
-                <div 
-                  ref={locationInputRef}
-                  className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative"
-                  style={{ minWidth: 0 }}
-                >
+                <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative">
                   <MapPin className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Dove"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    onFocus={() => setShowLocationSuggestions(true)}
-                    onBlur={() => setTimeout(() => setShowLocationSuggestions(false), 200)}
-                  />
+                  <div className="w-full text-gray-500 text-sm md:text-base">
+                    Dove
+                  </div>
                 </div>
 
                 {/* Date selection */}
                 <div className="flex items-center p-3 md:p-4 relative" style={{ flex: "1 1 0%", minWidth: 0 }}>
                   <div className="w-full flex items-center">
                     <Calendar className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <button className="w-full flex items-center justify-between text-left bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none text-sm md:text-base">
-                          <span className={date ? "" : "text-gray-500"}>
-                            {date ? formatSelectedDate(date) : "Quando"}
-                          </span>
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-white" style={{ zIndex: 999999 }} align="start">
-                        <CalendarComponent
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                          fromDate={new Date()}
-                          className="bg-white"
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <div className="w-full text-gray-500 text-sm md:text-base">
+                      Quando
+                    </div>
                   </div>
-                  <button
-                    className="ml-2 md:ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-3 sm:px-6 py-2 rounded-lg transition-colors flex items-center whitespace-nowrap text-sm md:text-base flex-shrink-0"
-                    onClick={handleSearch}
-                  >
-                    <Search className="h-4 w-4 mr-1 md:mr-2" />
-                    Cerca
-                  </button>
                 </div>
-              </div>
-            </div>
 
-            {/* Specialty suggestions dropdown - positioned absolutely */}
-            {showSpecialtySuggestions && specialtyInputRef.current && (
-              <div 
-                className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
-                style={{ 
-                  zIndex: 20,
-                  width: specialtyInputRef.current.offsetWidth,
-                  left: specialtyInputRef.current.offsetLeft,
-                  top: specialtyInputRef.current.offsetTop + specialtyInputRef.current.offsetHeight,
-                }}
-              >
-                {specialtySuggestions
-                  .filter(item => item.toLowerCase().includes(specialty.toLowerCase()) || specialty === "")
-                  .map((suggestion, index) => (
-                    <div
-                      key={index}
-                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
-                      onMouseDown={() => handleSpecialtySelect(suggestion)}
-                    >
-                      {suggestion}
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            {/* Location suggestions dropdown - positioned absolutely */}
-            {showLocationSuggestions && locationInputRef.current && (
-              <div 
-                className="absolute bg-white shadow-xl rounded-lg overflow-y-auto max-h-60"
-                style={{ 
-                  zIndex: 20,
-                  width: locationInputRef.current.offsetWidth,
-                  left: locationInputRef.current.offsetLeft,
-                  top: locationInputRef.current.offsetTop + locationInputRef.current.offsetHeight,
-                }}
-              >
-                {locationSuggestions
-                  .filter(item => item.toLowerCase().includes(location.toLowerCase()) || location === "")
-                  .map((suggestion, index) => (
-                    <div
-                      key={index}
-                      className="px-4 py-2 hover:bg-yellow-50 cursor-pointer text-sm md:text-base"
-                      onMouseDown={() => handleLocationSelect(suggestion)}
-                    >
-                      {suggestion}
-                    </div>
-                  ))}
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 mt-3 text-xs sm:text-sm text-gray-500">
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900 text-xs">
-                  ✓
-                </span>
-                <span>100% Gratuito</span>
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900 text-xs">
-                  ✓
-                </span>
-                <span>Recensioni autentiche di clienti reali</span>
+                {/* Search button */}
+                <div className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 md:py-4 rounded-r-xl transition-colors flex items-center justify-center">
+                  <Search className="h-5 w-5 mr-2" />
+                  <span className="font-medium">Cerca</span>
+                </div>
               </div>
             </div>
           </div>

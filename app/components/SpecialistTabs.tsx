@@ -45,6 +45,13 @@ export default function SpecialistTabs() {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const scrollToForm = () => {
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   const handleSpecialistClick = (specialist: (typeof specialists)[0], index: number) => {
     setActiveTab(index)
     setSelectedSpecialist(specialist)
@@ -53,7 +60,7 @@ export default function SpecialistTabs() {
 
   const handleViewSpecialists = () => {
     if (selectedSpecialist) {
-      router.push(`/doctors?specialty=${encodeURIComponent(selectedSpecialist.name)}`)
+      scrollToForm()
     }
   }
 
@@ -99,6 +106,7 @@ export default function SpecialistTabs() {
 
       toast.success("Grazie per esserti iscritto!")
       setEmail("")
+      router.push('/thank-you')
     } catch (error: any) {
       console.error('Subscription error:', error);
       toast.error(error.message || "Si è verificato un errore. Riprova più tardi.")
@@ -171,14 +179,20 @@ export default function SpecialistTabs() {
           >
             <div className="relative px-4 sm:px-0">
               <button
-                onClick={handleViewSpecialists}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleViewSpecialists()
+                }}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl border-2 border-blue-400 transition-all transform hover:scale-105 duration-300 flex items-center space-x-2 text-sm sm:text-base"
               >
                 <span className="underline">Clicca per vedere i nostri {selectedSpecialist.name}</span>
                 <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5 ml-1 sm:ml-2" />
               </button>
               <button 
-                onClick={closeButton}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  closeButton()
+                }}
                 className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors"
                 aria-label="Close"
               >

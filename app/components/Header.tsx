@@ -29,7 +29,7 @@ export default function Header() {
       </div>
       <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-yellow-100">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center">
+          <Link href="#join-us" onClick={scrollToJoinUs} className="flex items-center">
             <div className="w-[140px] h-[50px] overflow-hidden relative rounded-md">
               <Image
                 src="/flexicare-svg.svg"
@@ -44,7 +44,7 @@ export default function Header() {
           <nav className="hidden md:block">
             <ul className="flex space-x-6">
               <li>
-                <Link href="/doctors" className="text-gray-600 hover:text-yellow-600">
+                <Link href="#join-us" onClick={scrollToJoinUs} className="text-gray-600 hover:text-yellow-600">
                   Trova specialisti
                 </Link>
               </li>
@@ -55,7 +55,8 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  href="/registrati"
+                  href="#join-us"
+                  onClick={scrollToJoinUs}
                   className="border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors"
                 >
                   Registrati
@@ -63,7 +64,8 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  href="/accedi"
+                  href="#join-us"
+                  onClick={scrollToJoinUs}
                   className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-md font-medium transition-colors"
                 >
                   Accedi
@@ -91,7 +93,7 @@ export default function Header() {
           <div className="md:hidden fixed inset-0 z-50 bg-white">
             <div className="container mx-auto px-4 py-4">
               <div className="flex justify-between items-center mb-8">
-                <Link href="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="#join-us" onClick={scrollToJoinUs} className="flex items-center">
                   <div className="w-[140px] h-[50px] overflow-hidden relative rounded-md">
                     <Image
                       src="/flexicare-svg.svg"
@@ -111,31 +113,31 @@ export default function Header() {
               </div>
               <nav className="flex flex-col space-y-6">
                 <Link 
-                  href="/doctors" 
+                  href="#join-us" 
+                  onClick={scrollToJoinUs}
                   className="text-xl font-medium text-gray-800 hover:text-yellow-600"
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Trova specialisti
                 </Link>
                 <Link 
                   href="#join-us" 
-                  className="text-xl font-medium text-gray-800 hover:text-yellow-600"
                   onClick={scrollToJoinUs}
+                  className="text-xl font-medium text-gray-800 hover:text-yellow-600"
                 >
                   Per i professionisti
                 </Link>
                 <div className="flex flex-col space-y-4 pt-4">
                   <Link
-                    href="/registrati"
+                    href="#join-us"
+                    onClick={scrollToJoinUs}
                     className="border border-gray-300 hover:border-gray-400 text-gray-700 px-4 py-3 rounded-md font-medium transition-colors text-center"
-                    onClick={() => setMobileMenuOpen(false)}
                   >
                     Registrati
                   </Link>
                   <Link
-                    href="/accedi"
+                    href="#join-us"
+                    onClick={scrollToJoinUs}
                     className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-3 rounded-md font-medium transition-colors text-center"
-                    onClick={() => setMobileMenuOpen(false)}
                   >
                     Accedi
                   </Link>

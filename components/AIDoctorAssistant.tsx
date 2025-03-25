@@ -84,7 +84,10 @@ export default function AIDoctorAssistant() {
     <>
       {/* Floating Button */}
       <motion.button
-        onClick={() => setIsOpen(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(true);
+        }}
         className="fixed bottom-24 right-6 bg-[#FFCC00] text-white p-4 rounded-full shadow-lg hover:bg-amber-600 transition-colors z-[100]"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
