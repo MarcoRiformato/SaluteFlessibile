@@ -1,6 +1,8 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Clock, MessageSquare, CheckSquare } from "lucide-react"
+import { BenefitsSkeleton } from "./Skeleton"
 
 const benefits = [
   {
@@ -21,6 +23,22 @@ const benefits = [
 ]
 
 export default function Benefits() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate data loading
+  useEffect(() => {
+    const loadData = async () => {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setIsLoading(false)
+    }
+    loadData()
+  }, [])
+
+  if (isLoading) {
+    return <BenefitsSkeleton />
+  }
+
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-yellow-50">
       <div className="container mx-auto px-4">

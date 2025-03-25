@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { SpecialistTabsSkeleton } from "./Skeleton"
 
 const specialists = [
   { name: "Medici", icon: Stethoscope, description: "Medici di base e specialisti (Oculisti, Otorino)" },
@@ -41,9 +42,20 @@ export default function SpecialistTabs() {
   const [activeTab, setActiveTab] = useState(0)
   const [selectedSpecialist, setSelectedSpecialist] = useState<(typeof specialists)[0] | null>(null)
   const [isButtonVisible, setIsButtonVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const buttonRef = useRef<HTMLDivElement>(null)
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Simulate data loading
+  useEffect(() => {
+    const loadData = async () => {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setIsLoading(false)
+    }
+    loadData()
+  }, [])
 
   const scrollToForm = () => {
     const formElement = document.getElementById("join-us")
@@ -128,6 +140,10 @@ export default function SpecialistTabs() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [buttonRef])
+
+  if (isLoading) {
+    return <SpecialistTabsSkeleton />
+  }
 
   return (
     <section className="py-8 sm:py-12 md:py-16 bg-white">

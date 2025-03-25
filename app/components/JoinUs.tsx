@@ -8,9 +8,11 @@ import { ArrowRight, CheckCircle } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { toast } from "sonner"
 import type { SubscriptionType } from "@/lib/mailchimp"
+import { JoinUsSkeleton } from "./Skeleton"
 
 export default function JoinUs() {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -25,6 +27,16 @@ export default function JoinUs() {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
   const cityInputRef = useRef<HTMLInputElement>(null)
+
+  // Simulate data loading
+  useEffect(() => {
+    const loadData = async () => {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setIsLoading(false)
+    }
+    loadData()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -206,6 +218,10 @@ export default function JoinUs() {
     }
   }
 
+  if (isLoading) {
+    return <JoinUsSkeleton />
+  }
+
   return (
     <section id="join-us" className="py-8 sm:py-12 bg-yellow-50">
       <div className="container mx-auto px-4">
@@ -249,101 +265,103 @@ export default function JoinUs() {
                 required
                 autoComplete="email"
               />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-4 py-1">
-                    <label className="flex items-center gap-1.5 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="type"
-                        value="CLIENTS"
-                        checked={formData.type === "CLIENTS"}
-                        onChange={handleChange}
-                        className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
-                        required
-                      />
-                      <span className="text-sm text-gray-700">Paziente</span>
-                    </label>
-                    <label className="flex items-center gap-1.5 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="type"
-                        value="DOCTORS"
-                        checked={formData.type === "DOCTORS"}
-                        onChange={handleChange}
-                        className="w-3.5 h-3.5 text-yellow-400 focus:ring-yellow-400"
-                        required
-                      />
-                      <span className="text-sm text-gray-700">Dottore</span>
-                    </label>
-                  </div>
-                  <Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Telefono"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                    required
-                    autoComplete="tel"
-                  />
-                  <div className="relative" ref={cityInputRef}>
-                    <Input
-                      type="text"
-                      name="city"
-                      placeholder="Città"
-                      value={formData.city}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyDown}
-                      className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                      required
-                      autoComplete="off"
-                    />
-                    {showSuggestions && citySuggestions.length > 0 && (
-                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                        {citySuggestions.map((city, index) => (
-                          <div
-                            key={city}
-                            className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${
-                              index === selectedSuggestionIndex ? 'bg-gray-50' : ''
-                            }`}
-                            onClick={() => selectCity(city)}
-                          >
-                            {city}
-                          </div>
-                        ))}
+              <Input
+                type="tel"
+                name="phone"
+                placeholder="Telefono"
+                value={formData.phone}
+                onChange={handleChange}
+                className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                required
+                autoComplete="tel"
+              />
+              <div className="relative" ref={cityInputRef}>
+                <Input
+                  type="text"
+                  name="city"
+                  placeholder="Città"
+                  value={formData.city}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                  required
+                  autoComplete="address-level2"
+                />
+                {showSuggestions && citySuggestions.length > 0 && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {citySuggestions.map((city, index) => (
+                      <div
+                        key={city}
+                        className={`px-3 py-2 cursor-pointer hover:bg-gray-100 ${
+                          index === selectedSuggestionIndex ? 'bg-gray-100' : ''
+                        }`}
+                        onClick={() => selectCity(city)}
+                      >
+                        {city}
                       </div>
-                    )}
+                    ))}
                   </div>
-                  {formData.type === "DOCTORS" && (
-                    <Input
-                      type="text"
-                      name="specialization"
-                      placeholder="Specializzazione"
-                      value={formData.specialization}
-                      onChange={handleChange}
-                      className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                      required={formData.type === "DOCTORS"}
-                    />
-                  )}
-                </div>
+                )}
               </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  id="clients"
+                  name="type"
+                  value="CLIENTS"
+                  checked={formData.type === "CLIENTS"}
+                  onChange={handleChange}
+                  className="text-yellow-500 focus:ring-yellow-400"
+                />
+                <label htmlFor="clients" className="text-sm text-gray-600">Paziente</label>
+                <input
+                  type="radio"
+                  id="doctors"
+                  name="type"
+                  value="DOCTORS"
+                  checked={formData.type === "DOCTORS"}
+                  onChange={handleChange}
+                  className="ml-4 text-yellow-500 focus:ring-yellow-400"
+                />
+                <label htmlFor="doctors" className="text-sm text-gray-600">Dottore</label>
+              </div>
+              {formData.type === "DOCTORS" && (
+                <Input
+                  type="text"
+                  name="specialization"
+                  placeholder="Specializzazione"
+                  value={formData.specialization}
+                  onChange={handleChange}
+                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                  required
+                />
+              )}
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-yellow-400 text-gray-900 hover:bg-yellow-500 transition-colors"
+                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                {isSubmitting ? "Invio in corso..." : "Invia"}
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                    <span>Invio in corso...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Iscriviti ora</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </Button>
             </form>
           </div>
           <div className="w-full md:w-1/2">
             <div className="relative aspect-square">
               <Image
-                src="/images/dottori-bici.webp"
+                src="/dottori-bici.webp"
                 alt="Join us"
                 fill
-                className="object-cover rounded-lg"
+                className="object-contain"
                 priority
               />
             </div>

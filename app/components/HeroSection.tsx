@@ -9,6 +9,7 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
 import { it } from "date-fns/locale"
+import { HeroSkeleton } from "./Skeleton"
 
 // Example suggestion data
 const specialtySuggestions = [
@@ -61,6 +62,7 @@ export default function HeroSection() {
   const [specialty, setSpecialty] = useState("")
   const [location, setLocation] = useState("")
   const [date, setDate] = useState<Date | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [showSpecialtySuggestions, setShowSpecialtySuggestions] = useState(false)
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
@@ -78,6 +80,16 @@ export default function HeroSection() {
     (longest, current) => (current.length > longest.length ? current : longest),
     "",
   )
+
+  // Simulate data loading
+  useEffect(() => {
+    const loadData = async () => {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setIsLoading(false)
+    }
+    loadData()
+  }, [])
 
   // Animation interval effect with more precise control
   useEffect(() => {
@@ -127,6 +139,10 @@ export default function HeroSection() {
   const formatSelectedDate = (date: Date | undefined) => {
     if (!date) return ""
     return format(date, "d MMMM yyyy", { locale: it })
+  }
+
+  if (isLoading) {
+    return <HeroSkeleton />
   }
 
   return (
