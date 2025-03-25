@@ -79,6 +79,14 @@ export default function SpecialistTabs() {
         body: JSON.stringify({
           email,
           type: "CLIENTS",
+          merge_fields: {
+            FNAME: "",
+            LNAME: "",
+            ADDRESS: "",
+            PHONE: "",
+            TYPE: "Paziente",
+            SPEC: ""
+          }
         }),
       })
 

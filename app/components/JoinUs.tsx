@@ -130,7 +130,7 @@ export default function JoinUs() {
     try {
       console.log('Submitting form data:', formData);
       
-      // Create the subscription payload
+      // Create the subscription payload with properly formatted address
       const subscriptionData = {
         email: formData.email,
         type: formData.type,
@@ -138,7 +138,13 @@ export default function JoinUs() {
         merge_fields: {
           FNAME: formData.name,
           LNAME: formData.surname,
-          ADDRESS: formData.city,
+          ADDRESS: {
+            addr1: "",
+            city: formData.city,
+            state: "",
+            zip: "",
+            country: "IT"
+          },
           PHONE: formData.phone,
           TYPE: formData.type === "DOCTORS" ? "Dottore" : "Paziente",
           SPEC: formData.type === "DOCTORS" ? formData.specialization : ""

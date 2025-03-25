@@ -28,6 +28,20 @@ interface SubscribeData {
   merge_fields: MergeFields;
 }
 
+export async function getMergeFields() {
+  try {
+    if (!AUDIENCE_ID) {
+      throw new Error('Mailchimp audience ID is not configured');
+    }
+    const response = await mailchimp.lists.getListMergeFields(AUDIENCE_ID);
+    console.log('Mailchimp merge fields:', response);
+    return response;
+  } catch (error: any) {
+    console.error('Error getting merge fields:', error);
+    throw error;
+  }
+}
+
 export async function subscribeToMailchimp({ email, type, tags = [], merge_fields }: SubscribeData) {
   try {
     // Log full configuration for debugging
@@ -37,6 +51,10 @@ export async function subscribeToMailchimp({ email, type, tags = [], merge_field
       audienceId: AUDIENCE_ID,
     };
     console.log('Mailchimp config:', config);
+
+    // Get merge fields configuration for debugging
+    const mergeFieldsConfig = await getMergeFields();
+    console.log('Available merge fields:', mergeFieldsConfig);
 
     if (!AUDIENCE_ID) {
       throw new Error('Mailchimp audience ID is not configured');
