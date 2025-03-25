@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Search, MapPin, Calendar } from "lucide-react"
+import { Search, MapPin, Calendar, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns"
 import { it } from "date-fns/locale"
 import { HeroSkeleton } from "./Skeleton"
+import AIDoctorAssistant from "@/components/AIDoctorAssistant"
 
 // Example suggestion data
 const specialtySuggestions = [
@@ -63,6 +64,8 @@ export default function HeroSection() {
   const [location, setLocation] = useState("")
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true)
+  const [isAIOpen, setIsAIOpen] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
 
   const [showSpecialtySuggestions, setShowSpecialtySuggestions] = useState(false)
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
@@ -112,6 +115,15 @@ export default function HeroSection() {
     }
   }, [])
 
+  // Add tooltip effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTooltip(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   const scrollToForm = () => {
     const formElement = document.getElementById("join-us")
     if (formElement) {
@@ -146,7 +158,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative bg-yellow-50 py-6 overflow-visible">
+    <section className="relative bg-gradient-to-b from-yellow-50 to-white pt-12 pb-16 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative max-w-6xl mx-auto">
           {/* Title and Subtitle with Illustration */}
@@ -212,20 +224,53 @@ export default function HeroSection() {
           {/* Search Bar - separate from illustration */}
           <div className="relative" style={{ zIndex: 10 }}>
             <div 
-              className="bg-white rounded-xl shadow-lg border border-gray-200 cursor-pointer" 
-              onClick={scrollToForm}
+              className="bg-white rounded-xl shadow-lg border border-gray-200" 
             >
               <div className="flex flex-col md:flex-row">
                 {/* Specialty search field */}
                 <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative">
                   <Search className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
-                  <div className="w-full text-gray-500 text-sm md:text-base">
+                  <div 
+                    className="w-full text-gray-500 text-sm md:text-base cursor-pointer"
+                    onClick={scrollToForm}
+                  >
                     Prestazione o specialista
+                  </div>
+                  <div className="relative">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setIsAIOpen(true)
+                        setShowTooltip(false)
+                      }}
+                      className="ml-2 p-2.5 rounded-full bg-yellow-400 hover:bg-yellow-500 transition-all shadow-lg hover:shadow-xl active:shadow-md transform hover:-translate-y-0.5 active:translate-y-0"
+                      title="Chiedi assistenza all'AI"
+                    >
+                      <Sparkles className="h-5 w-5 text-white" />
+                    </button>
+                    
+                    {/* Animated Tooltip */}
+                    <AnimatePresence>
+                      {showTooltip && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute right-0 top-full mt-2 bg-gray-900 text-white text-sm py-2 px-3 rounded-lg shadow-xl whitespace-nowrap z-50"
+                        >
+                          <div className="absolute -top-2 right-4 w-4 h-4 bg-gray-900 transform rotate-45" />
+                          <p className="relative z-10">Prova l'assistente AI! 🤖✨</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
 
                 {/* Location search field */}
-                <div className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative">
+                <div 
+                  className="flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-4 relative cursor-pointer"
+                  onClick={scrollToForm}
+                >
                   <MapPin className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
                   <div className="w-full text-gray-500 text-sm md:text-base">
                     Dove
@@ -233,7 +278,11 @@ export default function HeroSection() {
                 </div>
 
                 {/* Date selection */}
-                <div className="flex items-center p-3 md:p-4 relative" style={{ flex: "1 1 0%", minWidth: 0 }}>
+                <div 
+                  className="flex items-center p-3 md:p-4 relative cursor-pointer" 
+                  style={{ flex: "1 1 0%", minWidth: 0 }}
+                  onClick={scrollToForm}
+                >
                   <div className="w-full flex items-center">
                     <Calendar className="h-5 w-5 text-yellow-500 mr-2 md:mr-3 flex-shrink-0" />
                     <div className="w-full text-gray-500 text-sm md:text-base">
@@ -243,7 +292,10 @@ export default function HeroSection() {
                 </div>
 
                 {/* Search button */}
-                <div className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 md:py-4 rounded-r-xl transition-colors flex items-center justify-center">
+                <div 
+                  onClick={scrollToForm}
+                  className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 md:py-4 rounded-r-xl transition-colors flex items-center justify-center cursor-pointer"
+                >
                   <Search className="h-5 w-5 mr-2" />
                   <span className="font-medium">Cerca</span>
                 </div>
@@ -252,6 +304,9 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* AI Doctor Assistant */}
+      <AIDoctorAssistant isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
     </section>
   )
 }
