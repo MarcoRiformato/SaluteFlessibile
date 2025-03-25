@@ -9,17 +9,24 @@ import { Menu, X } from "lucide-react"
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const scrollToJoinUs = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    const joinUsSection = document.getElementById("join-us")
-    if (joinUsSection) {
-      joinUsSection.scrollIntoView({ behavior: "smooth" })
-    }
-    setMobileMenuOpen(false)
-  }
-
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
+  }
+
+  const scrollToJoinUs = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
+    setMobileMenuOpen(false)
   }
 
   return (

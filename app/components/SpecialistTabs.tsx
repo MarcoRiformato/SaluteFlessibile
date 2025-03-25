@@ -60,7 +60,14 @@ export default function SpecialistTabs() {
   const scrollToForm = () => {
     const formElement = document.getElementById("join-us")
     if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" })
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
     }
   }
 
@@ -68,6 +75,17 @@ export default function SpecialistTabs() {
     setActiveTab(index)
     setSelectedSpecialist(specialist)
     setIsButtonVisible(true)
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
   }
 
   const handleViewSpecialists = () => {

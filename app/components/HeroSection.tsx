@@ -127,7 +127,14 @@ export default function HeroSection() {
   const scrollToForm = () => {
     const formElement = document.getElementById("join-us")
     if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" })
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
     }
   }
 
@@ -242,6 +249,7 @@ export default function HeroSection() {
                         e.stopPropagation()
                         setIsAIOpen(true)
                         setShowTooltip(false)
+                        scrollToForm()
                       }}
                       className="ml-2 p-2.5 rounded-full bg-yellow-400 hover:bg-yellow-500 transition-all shadow-lg hover:shadow-xl active:shadow-md transform hover:-translate-y-0.5 active:translate-y-0"
                       title="Chiedi assistenza all'AI"

@@ -61,10 +61,32 @@ export default function AIDoctorAssistant({ isOpen: externalIsOpen, onClose }: A
 
   const handleSpecialtySelect = (specialty: string) => {
     setShowSpecialties(false)
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
   }
 
   const handleQuestionClick = (question: string) => {
     setShowSuggestions(false)
+    const formElement = document.getElementById("join-us")
+    if (formElement) {
+      const headerHeight = 80 // Reduced from 120 to account for the actual header height
+      const elementPosition = formElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20 // Added 20px padding
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {

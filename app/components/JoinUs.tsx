@@ -208,7 +208,7 @@ export default function JoinUs() {
         <div className="flex flex-col lg:flex-row">
           {/* Left side - Form */}
           <div className="w-full lg:w-1/2 p-4 sm:p-6">
-            <form onSubmit={handleSubscribe} className="space-y-3 sm:space-y-4">
+            <form id="join-us" onSubmit={handleSubscribe} className="space-y-3 sm:space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
@@ -216,7 +216,7 @@ export default function JoinUs() {
                   placeholder="Nome"
                   value={formData.name}
                   onChange={handleChange}
-                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                   required
                   autoComplete="given-name"
                 />
@@ -226,7 +226,7 @@ export default function JoinUs() {
                   placeholder="Cognome"
                   value={formData.surname}
                   onChange={handleChange}
-                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                   required
                   autoComplete="family-name"
                 />
@@ -238,7 +238,7 @@ export default function JoinUs() {
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                   required
                   autoComplete="email"
                 />
@@ -248,7 +248,7 @@ export default function JoinUs() {
                   placeholder="Telefono"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                   required
                   autoComplete="tel"
                 />
@@ -262,7 +262,7 @@ export default function JoinUs() {
                     value={formData.city}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                     required
                     autoComplete="address-level2"
                   />
@@ -290,7 +290,7 @@ export default function JoinUs() {
                     placeholder="Specializzazione"
                     value={formData.specialization}
                     onChange={handleChange}
-                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107]/20 h-10 sm:h-11"
                     required
                   />
                 )}
@@ -352,7 +352,7 @@ export default function JoinUs() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center justify-center w-full bg-[#ffc107] hover:bg-[#ffb300] text-black font-medium h-10 sm:h-11 rounded-lg sm:rounded-xl text-sm transition-all duration-200 gap-2"
+                className="flex items-center justify-center w-full bg-[#ffc107] hover:bg-[#ffca28] text-black font-medium h-10 sm:h-11 rounded-lg sm:rounded-xl text-sm transition-all duration-200 gap-2 focus:ring-4 focus:ring-[#ffc107]/20"
               >
                 {isSubmitting ? (
                   <>
