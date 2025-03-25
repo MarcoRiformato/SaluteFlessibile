@@ -8,7 +8,7 @@ export default function ThankYouPage() {
           Grazie per esserti iscritto!
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Abbiamo ricevuto la tua richiesta e ti contatteremo presto per darti tutte le informazioni necessarie.
+        Grazie per essere a bordo e per aver scelto Flexicare: il lancio è alle porte e insieme rivoluzioneremo la salute, rendendola più semplice, veloce e trasparente. Presto ti sveleremo tutte le novità, assicurati di controllare la tua mail.
         </p>
         <Link 
           href="/"
