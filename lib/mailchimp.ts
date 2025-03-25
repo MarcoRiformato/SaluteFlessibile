@@ -13,19 +13,19 @@ const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
 export type SubscriptionType = 'CLIENTS' | 'DOCTORS';
 
 interface MergeFields {
-  MERGE1: string;  // Nome
-  MERGE2: string;  // Cognome
-  MERGE3: string;  // Indirizzo
-  MERGE4: string;  // Phone
-  MERGE7: string;  // Tipo
-  MERGE8: string;  // Specializzazione
+  FNAME: string;     // First Name
+  LNAME: string;     // Last Name
+  ADDRESS: string;   // Address/City
+  PHONE: string;     // Phone
+  TYPE: string;      // Type
+  SPEC: string;      // Specialization
 }
 
 interface SubscribeData {
   email: string;
   type: SubscriptionType;
   tags?: string[];
-  merge_fields: MergeFields;  // Make this required
+  merge_fields: MergeFields;
 }
 
 export async function subscribeToMailchimp({ email, type, tags = [], merge_fields }: SubscribeData) {
