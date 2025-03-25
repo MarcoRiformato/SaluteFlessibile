@@ -340,7 +340,7 @@ export default function JoinUs() {
           <div className="w-full md:w-1/2">
             <div className="relative aspect-square">
               <Image
-                src="/images/join-us-image.jpg"
+                src="/images/dottori-bici.webp"
                 alt="Join us"
                 fill
                 className="object-cover rounded-lg"

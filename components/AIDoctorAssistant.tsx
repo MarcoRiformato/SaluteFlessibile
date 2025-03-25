@@ -4,30 +4,13 @@ import { useState, useRef, useEffect } from "react"
 import { Send, User, Sparkles, MessageSquare, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-interface AIDoctorAssistantProps {
-  isOpen?: boolean
-  onClose?: () => void
-}
-
-export default function AIDoctorAssistant({ isOpen: externalIsOpen, onClose }: AIDoctorAssistantProps) {
-  const [internalIsOpen, setInternalIsOpen] = useState(false)
+export default function AIDoctorAssistant() {
+  const [isOpen, setIsOpen] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(true)
   const [showSpecialties, setShowSpecialties] = useState(false)
   const [input, setInput] = useState("")
-  const [showFloatingButton, setShowFloatingButton] = useState(false)
-  const [showTooltip, setShowTooltip] = useState(false)
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
-
-  // Use external or internal state
-  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen
-  const setIsOpen = (value: boolean) => {
-    if (externalIsOpen !== undefined) {
-      onClose?.()
-    } else {
-      setInternalIsOpen(value)
-    }
-  }
 
   const messages = [
     {
@@ -97,82 +80,20 @@ export default function AIDoctorAssistant({ isOpen: externalIsOpen, onClose }: A
     }
   }
 
-  // Handle scroll and tooltip
-  useEffect(() => {
-    const handleScroll = () => {
-      const shouldShow = window.scrollY > 500
-      setShowFloatingButton(shouldShow)
-      if (!shouldShow) {
-        setShowTooltip(false)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Check initial position
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Show tooltip after button appears and hide after 5 seconds
-  useEffect(() => {
-    let showTimer: NodeJS.Timeout
-    let hideTimer: NodeJS.Timeout
-
-    if (showFloatingButton) {
-      showTimer = setTimeout(() => {
-        setShowTooltip(true)
-        // Hide tooltip after 5 seconds
-        hideTimer = setTimeout(() => {
-          setShowTooltip(false)
-        }, 5000)
-      }, 1000)
-    }
-
-    return () => {
-      clearTimeout(showTimer)
-      clearTimeout(hideTimer)
-    }
-  }, [showFloatingButton])
-
   return (
     <>
       {/* Floating Button */}
-      <AnimatePresence>
-        {showFloatingButton && (
-          <div className="fixed bottom-24 right-6 z-[100]">
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(true);
-                setShowTooltip(false);
-              }}
-              className="bg-yellow-400 hover:bg-yellow-500 text-white p-2.5 rounded-full shadow-lg hover:shadow-xl active:shadow-md transform hover:-translate-y-0.5 active:translate-y-0 transition-all"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Sparkles className="h-6 w-6" />
-            </motion.button>
-
-            {/* Tooltip Bubble */}
-            <AnimatePresence>
-              {showTooltip && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  className="absolute bottom-full right-0 mb-2 bg-gray-900 text-white text-sm py-2 px-3 rounded-lg shadow-xl whitespace-nowrap"
-                >
-                  <div className="absolute -bottom-2 right-4 w-4 h-4 bg-gray-900 transform rotate-45" />
-                  <p className="relative z-10">Chiedi aiuto all'AI! 🤖✨</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        )}
-      </AnimatePresence>
+      <motion.button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(true);
+        }}
+        className="fixed bottom-24 right-6 bg-[#FFCC00] text-white p-4 rounded-full shadow-lg hover:bg-amber-600 transition-colors z-[100]"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <MessageSquare className="h-6 w-6" />
+      </motion.button>
 
       {/* Modal */}
       <AnimatePresence>
