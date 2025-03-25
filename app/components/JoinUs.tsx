@@ -4,6 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Input, Button } from "@/components/ui"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { toast } from "sonner"
@@ -47,39 +49,6 @@ export default function JoinUs() {
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  const scrollToForm = () => {
-    const formElement = document.getElementById('join-us')
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
-  useEffect(() => {
-    // Add click event listeners to all clickable elements
-    const addClickListeners = () => {
-      const clickableElements = document.querySelectorAll('a, button, input[type="submit"], [role="button"]')
-      clickableElements.forEach(element => {
-        if (!element.closest('#join-us')) { // Don't add listeners to elements inside the form
-          element.addEventListener('click', (e) => {
-            e.preventDefault()
-            scrollToForm()
-          })
-        }
-      })
-    }
-
-    addClickListeners()
-    return () => {
-      // Clean up event listeners
-      const clickableElements = document.querySelectorAll('a, button, input[type="submit"], [role="button"]')
-      clickableElements.forEach(element => {
-        if (!element.closest('#join-us')) {
-          element.removeEventListener('click', scrollToForm)
-        }
-      })
-    }
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,24 +192,31 @@ export default function JoinUs() {
   }
 
   return (
-    <section id="join-us" className="py-8 sm:py-12 bg-yellow-50">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-          <div className="w-full md:w-1/2 text-center md:text-left">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">Non rimandare la cura della tua salute</h2>
-            <p className="text-sm sm:text-base text-gray-600 mb-4">
-              Flexicare sta arrivando: prenotare visite e consulenze sarà finalmente semplice e trasparente. Lascia i tuoi dati e unisciti a chi vuole risparmiare tempo e scoprire i migliori professionisti, senza compromessi sulla qualità
-            </p>
+    <main className="min-h-screen flex items-center justify-center p-2 sm:p-4 bg-gradient-to-br from-[#f9f5e3] to-[#f5f5f5]">
+      <div className="w-full max-w-5xl mx-auto bg-[#fffaeb] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
+        {/* Header section */}
+        <div className="p-4 sm:p-6 pb-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Non rimandare la cura della tua salute</h1>
+          <p className="text-sm sm:text-base text-gray-700 mt-2 mb-3 sm:mb-4">
+            Flexicare sta arrivando: prenotare visite e consulenze sarà finalmente semplice e trasparente. Lascia i tuoi
+            dati e unisciti a chi vuole risparmiare tempo e scoprire i migliori professionisti, senza compromessi sulla
+            qualità
+          </p>
+        </div>
 
-            <form onSubmit={handleSubscribe} className="flex flex-col gap-2 max-w-md mx-auto md:mx-0" autoComplete="on">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {/* Main content */}
+        <div className="flex flex-col lg:flex-row">
+          {/* Left side - Form */}
+          <div className="w-full lg:w-1/2 p-4 sm:p-6">
+            <form onSubmit={handleSubscribe} className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
                   name="name"
                   placeholder="Nome"
                   value={formData.name}
                   onChange={handleChange}
-                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
                   required
                   autoComplete="given-name"
                 />
@@ -250,100 +226,137 @@ export default function JoinUs() {
                   placeholder="Cognome"
                   value={formData.surname}
                   onChange={handleChange}
-                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
                   required
                   autoComplete="family-name"
                 />
               </div>
-              <Input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                required
-                autoComplete="email"
-              />
-              <Input
-                type="tel"
-                name="phone"
-                placeholder="Telefono"
-                value={formData.phone}
-                onChange={handleChange}
-                className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                required
-                autoComplete="tel"
-              />
-              <div className="relative" ref={cityInputRef}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
-                  type="text"
-                  name="city"
-                  placeholder="Città"
-                  value={formData.city}
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
                   onChange={handleChange}
-                  onKeyDown={handleKeyDown}
-                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
                   required
-                  autoComplete="address-level2"
+                  autoComplete="email"
                 />
-                {showSuggestions && citySuggestions.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                    {citySuggestions.map((city, index) => (
-                      <div
-                        key={city}
-                        className={`px-3 py-2 cursor-pointer hover:bg-gray-100 ${
-                          index === selectedSuggestionIndex ? 'bg-gray-100' : ''
-                        }`}
-                        onClick={() => selectCity(city)}
-                      >
-                        {city}
-                      </div>
-                    ))}
-                  </div>
+                <Input
+                  type="tel"
+                  name="phone"
+                  placeholder="Telefono"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                  required
+                  autoComplete="tel"
+                />
+              </div>
+              <div className={`grid ${formData.type === "DOCTORS" ? "grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" : ""}`}>
+                <div className="relative" ref={cityInputRef}>
+                  <Input
+                    type="text"
+                    name="city"
+                    placeholder="Città"
+                    value={formData.city}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                    required
+                    autoComplete="address-level2"
+                  />
+                  {showSuggestions && citySuggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                      {citySuggestions.map((city, index) => (
+                        <div
+                          key={city}
+                          className={`px-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg ${
+                            index === selectedSuggestionIndex ? 'bg-gray-50' : ''
+                          }`}
+                          onClick={() => selectCity(city)}
+                        >
+                          {city}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {formData.type === "DOCTORS" && (
+                  <Input
+                    type="text"
+                    name="specialization"
+                    placeholder="Specializzazione"
+                    value={formData.specialization}
+                    onChange={handleChange}
+                    className="bg-white rounded-lg sm:rounded-xl border-gray-200 focus:border-[#ffc107] focus:ring-[#ffc107] h-10 sm:h-11"
+                    required
+                  />
                 )}
               </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  id="clients"
-                  name="type"
-                  value="CLIENTS"
-                  checked={formData.type === "CLIENTS"}
-                  onChange={handleChange}
-                  className="text-yellow-500 focus:ring-yellow-400"
-                />
-                <label htmlFor="clients" className="text-sm text-gray-600">Paziente</label>
-                <input
-                  type="radio"
-                  id="doctors"
-                  name="type"
-                  value="DOCTORS"
-                  checked={formData.type === "DOCTORS"}
-                  onChange={handleChange}
-                  className="ml-4 text-yellow-500 focus:ring-yellow-400"
-                />
-                <label htmlFor="doctors" className="text-sm text-gray-600">Dottore</label>
+
+              <div className="mb-4 sm:mb-6">
+                <p className="text-sm font-medium mb-2 text-gray-700">Sei un:</p>
+                <RadioGroup
+                  defaultValue="CLIENTS"
+                  className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, type: value as SubscriptionType }))}
+                >
+                  <div className="flex-1">
+                    <div
+                      className={`border-2 rounded-lg sm:rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
+                        formData.type === "CLIENTS" ? "border-[#ffc107] bg-[#fffbeb]" : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setFormData(prev => ({ ...prev, type: "CLIENTS" }))}
+                    >
+                      <RadioGroupItem value="CLIENTS" id="clients" className="sr-only" />
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="clients" className="font-medium cursor-pointer text-gray-900">
+                          Paziente
+                        </Label>
+                        {formData.type === "CLIENTS" && (
+                          <div className="text-[#ffc107]">
+                            <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">Trova i migliori professionisti</p>
+                    </div>
+                  </div>
+
+                  <div className="flex-1">
+                    <div
+                      className={`border-2 rounded-lg sm:rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
+                        formData.type === "DOCTORS" ? "border-[#ffc107] bg-[#fffbeb]" : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setFormData(prev => ({ ...prev, type: "DOCTORS" }))}
+                    >
+                      <RadioGroupItem value="DOCTORS" id="doctors" className="sr-only" />
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="doctors" className="font-medium cursor-pointer text-gray-900">
+                          Dottore
+                        </Label>
+                        {formData.type === "DOCTORS" && (
+                          <div className="text-[#ffc107]">
+                            <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">Espandi la tua pratica medica</p>
+                    </div>
+                  </div>
+                </RadioGroup>
               </div>
-              {formData.type === "DOCTORS" && (
-                <Input
-                  type="text"
-                  name="specialization"
-                  placeholder="Specializzazione"
-                  value={formData.specialization}
-                  onChange={handleChange}
-                  className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm transition-all"
-                  required
-                />
-              )}
+
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="flex items-center justify-center w-full bg-[#ffc107] hover:bg-[#ffb300] text-black font-medium h-10 sm:h-11 rounded-lg sm:rounded-xl text-sm transition-all duration-200 gap-2"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
                     <span>Invio in corso...</span>
                   </>
                 ) : (
@@ -355,20 +368,83 @@ export default function JoinUs() {
               </Button>
             </form>
           </div>
-          <div className="w-full md:w-1/2">
-            <div className="relative aspect-square">
-              <Image
-                src="/dottori-bici.webp"
-                alt="Join us"
-                fill
-                className="object-contain"
-                priority
-              />
+
+          {/* Right side - Benefits */}
+          <div className="w-full lg:w-1/2 p-4 sm:p-6 bg-gradient-to-br from-[#f0f9f4] to-[#f8fcf9] relative">
+            <div className="absolute top-0 right-0 w-16 sm:w-24 h-16 sm:h-24 bg-[#4caf50]/10 rounded-bl-[100px]"></div>
+
+            <div className="relative">
+              <div className="flex items-center mb-3 sm:mb-4">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#ffc107] flex items-center justify-center mr-2 sm:mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="sm:w-4 sm:h-4"
+                  >
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+                    <circle cx="20" cy="10" r="2" />
+                  </svg>
+                </div>
+                <h2 className="text-lg sm:text-xl font-semibold text-[#2e7d32]">Per i medici</h2>
+              </div>
+
+              <div className={`transition-all duration-300 ${formData.type === "DOCTORS" ? "opacity-100" : "opacity-80"}`}>
+                <p className="text-sm sm:text-base text-[#1b5e20] mb-3 sm:mb-4">
+                  Unisciti alla nostra rete di professionisti e goditi questi vantaggi esclusivi:
+                </p>
+
+                <ul className="space-y-3 sm:space-y-4">
+                  <li className="flex items-start">
+                    <div className="mr-2 sm:mr-3 mt-0.5 text-[#ffc107]">
+                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm sm:text-base text-[#1b5e20]">Aumenta la tua visibilità online</span>
+                      <p className="text-xs sm:text-sm text-[#1b5e20]/70 mt-0.5">Raggiungi più pazienti nella tua zona</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="mr-2 sm:mr-3 mt-0.5 text-[#ffc107]">
+                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm sm:text-base text-[#1b5e20]">Gestisci il tuo calendario in autonomia</span>
+                      <p className="text-xs sm:text-sm text-[#1b5e20]/70 mt-0.5">Controlla la tua disponibilità in tempo reale</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="mr-2 sm:mr-3 mt-0.5 text-[#ffc107]">
+                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm sm:text-base text-[#1b5e20]">Ricevi pagamenti in modo sicuro</span>
+                      <p className="text-xs sm:text-sm text-[#1b5e20]/70 mt-0.5">Transazioni protette e trasparenti</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="mr-2 sm:mr-3 mt-0.5 text-[#ffc107]">
+                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm sm:text-base text-[#1b5e20]">Zero costi fissi, solo commissioni sulle prenotazioni</span>
+                      <p className="text-xs sm:text-sm text-[#1b5e20]/70 mt-0.5">Paghi solo quando guadagni</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </main>
   )
 }
 

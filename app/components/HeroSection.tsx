@@ -204,7 +204,7 @@ export default function HeroSection() {
               </h1>
               <div className="relative">
                 <p className="text-lg sm:text-xl text-gray-600 mt-3 md:mt-6 max-w-2xl mx-auto sm:mx-0 text-center sm:text-left">
-                  La piattaforma con recensioni affidabili che troverà rapidamente il professionista adatto a <strong>te</strong>. Iscriviti ora per essere tra i primi a provarla!
+                  Prenota la visita giusta con il professionista <strong>giusto</strong>, quando vuoi <strong>tu</strong>
                 </p>
               </div>
             </div>
