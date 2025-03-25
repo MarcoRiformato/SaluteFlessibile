@@ -82,10 +82,10 @@ export default function SpecialistTabs() {
           merge_fields: {
             FNAME: "",
             LNAME: "",
-            ADDRESS: "",
             PHONE: "",
             TYPE: "Paziente",
-            SPEC: ""
+            SPECIALIZ: "",
+            CITY: ""
           }
         }),
       })

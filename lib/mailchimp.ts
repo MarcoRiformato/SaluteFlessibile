@@ -15,10 +15,12 @@ export type SubscriptionType = 'CLIENTS' | 'DOCTORS';
 interface MergeFields {
   FNAME: string;     // First Name
   LNAME: string;     // Last Name
-  ADDRESS: string;   // Address/City
   PHONE: string;     // Phone
-  TYPE: string;      // Type
-  SPEC: string;      // Specialization
+  BIRTHDAY?: string; // Birthday (optional)
+  COMPANY?: string;  // Company (optional)
+  TYPE: string;      // Type (Paziente/Dottore)
+  SPECIALIZ: string; // Specialization
+  CITY: string;      // City
 }
 
 interface SubscribeData {

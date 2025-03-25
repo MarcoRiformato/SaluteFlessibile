@@ -138,16 +138,10 @@ export default function JoinUs() {
         merge_fields: {
           FNAME: formData.name,
           LNAME: formData.surname,
-          ADDRESS: {
-            addr1: "",
-            city: formData.city,
-            state: "",
-            zip: "",
-            country: "IT"
-          },
           PHONE: formData.phone,
           TYPE: formData.type === "DOCTORS" ? "Dottore" : "Paziente",
-          SPEC: formData.type === "DOCTORS" ? formData.specialization : ""
+          SPECIALIZ: formData.type === "DOCTORS" ? formData.specialization : "",
+          CITY: formData.city
         }
       };
 
